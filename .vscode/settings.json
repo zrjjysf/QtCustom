@@ -1,0 +1,10 @@
+{
+  "clangd.arguments": [
+    "--compile-commands-dir=.",
+    "--header-insertion=never",
+    "--completion-style=detailed"
+  ],
+  "C_Cpp.intelliSenseEngine": "disabled", // 禁用微软插件的补全
+  "clangd.path": "/usr/bin/clangd",       // 根据你的系统路径调整
+  "clangd.completion.completeBrackets": false
+}

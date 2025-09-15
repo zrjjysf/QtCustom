@@ -75,9 +75,6 @@ void BatteryWgt::paintEvent(QPaintEvent *)
     QRectF svgRect(96, 224, 896, 576);
     double aspectRatio = svgRect.width() / svgRect.height();
 
-    // 控件尺寸
-//    int w = width(), h = height();
-
     // 留出边距以防边框被裁剪
     const qreal margin = 4.0;
     QRectF availableRect = rect().adjusted(margin, margin, -margin, -margin);
