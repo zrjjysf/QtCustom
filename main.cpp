@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QPushButton>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -19,25 +20,28 @@ int main(int argc, char *argv[])
     }
     // 创建主窗口
     QWidget window;
-    window.setWindowTitle("Battery Widget with QSS");
+    window.resize(1024, 600);
+    QVBoxLayout *winLayout = new QVBoxLayout(&window);
+
+    //状态栏
+    QWidget *statusBar=new QWidget;
+    statusBar->setAutoFillBackground(true);
+    statusBar->setObjectName("statusBar");
+    winLayout->addWidget(statusBar);
+    winLayout->addStretch(1);
+
+    QHBoxLayout *statusBarLayout = new QHBoxLayout(statusBar);
 
     // 创建电池控件
     BatteryWgt *battery = new BatteryWgt(true);
-//    battery->setBatteryPercent(35); // 设置当前电量
 
-    // 布局
-    QHBoxLayout *layout = new QHBoxLayout(&window);
-//    QPushButton * a=new QPushButton();
-
-    layout->setAlignment(Qt::AlignCenter);
-//    layout->addWidget(a,Qt::AlignCenter);
-    layout->addWidget(battery,Qt::AlignCenter);
+    statusBarLayout->addWidget(battery,Qt::AlignCenter);
     qDebug()<<battery->sizeHint();
+    qDebug()<<battery->width()<<","<<battery->height();
 
     QTimer* click=new QTimer;
     QObject::connect(click,&QTimer::timeout,[battery](){static int per=10;battery->setBatteryPercent(per);per=per>=100?0:per+10;});
     click->start(1000);
-    window.resize(300, 300);
     window.show();
 
     return app.exec();

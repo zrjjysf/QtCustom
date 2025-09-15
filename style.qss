@@ -1,6 +1,13 @@
+QWidget#statusBar
+{
+    font-size:12pt;
+    min-height:3.5em;
+    background-color:blue;
+}
+
 BatteryWgt {
     qproperty-batteryColorConfig: "20:#ff0000;50:#ffaa00;100:#00ff00";
     margin:10px;
     padding:10px;
-    background-color:blue;
+    border:2px red;
 }
