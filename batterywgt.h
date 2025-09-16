@@ -1,11 +1,11 @@
 #ifndef BATTERYWGT_H
 #define BATTERYWGT_H
 
-#include <QWidget>
+#include <QFrame>
 #include <QColor>
 #include <QMap>
 
-class BatteryWgt : public QWidget
+class BatteryWgt : public QFrame
 {
     Q_OBJECT
     Q_PROPERTY(QString batteryColorConfig READ batteryColorConfig WRITE setBatteryColorConfig)
