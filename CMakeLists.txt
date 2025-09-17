@@ -17,19 +17,29 @@ qt5_add_resources(RESOURCE_FILES resources.qrc)
 
 # 添加源文件和头文件
 set(SOURCES
-    batterywgt.cpp
+    batterywgt/batterywgt.cpp
+    batterywgt/demonstrate.cpp
+    customscrollbar/customscrollbar.cpp
+    customscrollbar/demonstrate.cpp
     main.cpp
     ${RESOURCE_FILES}
 )
 
 set(HEADERS
-    batterywgt.h
+    batterywgt/batterywgt.h
+    customscrollbar/customscrollbar.h
+    demonstrate.h
 )
 
 # 添加可执行文件
 add_executable(${PROJECT_NAME}
     ${SOURCES}
     ${HEADERS}
+)
+
+include_directories(
+    ${CMAKE_SOURCE_DIR}/batterywgt
+    ${CMAKE_SOURCE_DIR}/customscrollbar
 )
 
 # 链接 Qt 库
