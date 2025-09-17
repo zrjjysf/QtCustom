@@ -21,6 +21,7 @@ set(SOURCES
     batterywgt/demonstrate.cpp
     customscrollbar/customscrollbar.cpp
     customscrollbar/demonstrate.cpp
+    tool.cpp
     main.cpp
     ${RESOURCE_FILES}
 )
@@ -29,6 +30,7 @@ set(HEADERS
     batterywgt/batterywgt.h
     customscrollbar/customscrollbar.h
     demonstrate.h
+    tool.h
 )
 
 # 添加可执行文件
@@ -38,6 +40,7 @@ add_executable(${PROJECT_NAME}
 )
 
 include_directories(
+    ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/batterywgt
     ${CMAKE_SOURCE_DIR}/customscrollbar
 )

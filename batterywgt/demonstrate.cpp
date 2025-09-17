@@ -10,18 +10,14 @@
 #include <QFrame>
 #include <QStyleOption>
 #include <QPainter>
+#include "tool.h"
 
 int batterywgt_demonstrate(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
     // 加载 QSS 样式表
-    QFile qssFile(":/style.qss"); // 如果你放在资源文件中
-    if (qssFile.open(QFile::ReadOnly)) {
-        QString styleSheet = qssFile.readAll();
-        app.setStyleSheet(styleSheet);
-        qDebug()<<styleSheet;
-    }
+    app.setStyleSheet(getQSS());
     // 创建主窗口
     QWidget window;
     window.resize(1024, 600);

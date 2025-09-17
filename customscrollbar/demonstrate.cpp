@@ -1,11 +1,12 @@
 #include <QApplication>
 #include <QTextEdit>
 #include "customscrollbar.h"
+#include "tool.h"
 
 int customscrollbar_demonstrate(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
+    a.setStyleSheet(getQSS());
     QTextEdit edit;
     edit.setVerticalScrollBar(new CustomScrollBar(&edit));
 

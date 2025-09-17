@@ -1,4 +1,4 @@
-QWidget#statusBar
+/* QWidget#statusBar
 {
     font-family: 'Microsoft YaHei';
     font-size:8pt;
@@ -21,4 +21,13 @@ BatteryWgt {
     margin:10px;
     padding:10px;
     border:10px;
+} */
+
+QScrollBar:vertical {
+    margin: 40px 0 40px 0; /* 为顶部和底部按钮预留空间 */
+    /* background-color:blue; */
+    width: 20px;
+}
+QScrollBar:vertical:pressed {
+    background-color: #999999; /* 按下时变暗 */
 }
