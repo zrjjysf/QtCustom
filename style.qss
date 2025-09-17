@@ -26,8 +26,9 @@ BatteryWgt {
 
 /* 自定义滚动条样式 */
 CustomScrollBar {
+    font-size: 12pt;
     background: #f0f0f0;
-    width: 16px;
+    width: 1em;
 }
 
 /* 轨道样式 */

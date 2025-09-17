@@ -2,11 +2,17 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QStyleOptionSlider>
-#include <QStyle>
+#include <QPropertyAnimation>
+#include <QTimer>
 #include "tool.h"
 
 CustomScrollBar::CustomScrollBar(QWidget *parent)
-    : QScrollBar(Qt::Vertical, parent), m_dragging(false)
+    : QScrollBar(Qt::Vertical, parent), 
+      m_dragging(false),
+      m_topButtonPressed(false),
+      m_pageUpButtonPressed(false),
+      m_pageDownButtonPressed(false),
+      m_bottomButtonPressed(false)
 {
     dumpPaletteColors(palette());
 }
@@ -59,81 +65,117 @@ void CustomScrollBar::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
     
     QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
     
     // 1. 绘制背景
     p.fillRect(rect(), palette().window());
     
-    // 2. 使用QStyle绘制轨道
-    QStyleOptionSlider opt;
-    initStyleOption(&opt);
-    
-    // 设置轨道的矩形区域
+    // 2. 绘制轨道
     QRect groove = grooveRect();
-    opt.rect = groove;
-    opt.subControls = QStyle::SC_ScrollBarGroove;
+    p.fillRect(groove, palette().base());
+    p.setPen(palette().mid().color());
+    p.drawRect(groove.adjusted(0, 0, -1, -1));
     
-    // 绘制轨道
-    style()->drawComplexControl(QStyle::CC_ScrollBar, &opt, &p, this);
-    
-    // 3. 使用QStyle绘制滑块
-    if (maximum() != minimum()) {
-        // 创建一个新的选项用于滑块
-        QStyleOptionSlider sliderOpt;
-        initStyleOption(&sliderOpt);
+    // 3. 绘制滑块
+    QRect slider = sliderRect();
+    if (slider.isValid()) {
+        // 绘制3D效果的滑块
+        QLinearGradient gradient(slider.topLeft(), slider.bottomRight());
+        gradient.setColorAt(0, palette().light().color());
+        gradient.setColorAt(1, palette().dark().color());
+        p.fillRect(slider, gradient);
         
-        // 设置滑块的矩形区域
-        QRect slider = sliderRect();
-        sliderOpt.rect = slider;
-        sliderOpt.subControls = QStyle::SC_ScrollBarSlider;
-        
-        // 设置滑块状态
-        if (m_dragging) {
-            sliderOpt.state |= QStyle::State_Sunken;
-        }
-        
-        // 绘制滑块
-        style()->drawComplexControl(QStyle::CC_ScrollBar, &sliderOpt, &p, this);
+        // 绘制边框
+        p.setPen(palette().shadow().color());
+        p.drawRect(slider.adjusted(0, 0, -1, -1));
     }
     
-    // 4. 绘制按钮
-    p.setPen(Qt::black);
-    p.setBrush(palette().button());
+    // 4. 绘制按钮 - 使用3D效果
+    draw3DButton(p, topButtonRect(), "⤒", m_topButtonPressed);
+    draw3DButton(p, pageUpButtonRect(), "▲", m_pageUpButtonPressed);
+    draw3DButton(p, pageDownButtonRect(), "▼", m_pageDownButtonPressed);
+    draw3DButton(p, bottomButtonRect(), "⤓", m_bottomButtonPressed);
+}
+
+void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, const QString &text, bool pressed)
+{
+    // 绘制3D效果的按钮
+    QColor buttonColor = palette().button().color();
     
-    QRect buttons[] = {
-        topButtonRect(), 
-        pageUpButtonRect(), 
-        pageDownButtonRect(), 
-        bottomButtonRect()
-    };
-    
-    for (const QRect &rect : buttons) {
-        p.fillRect(rect, palette().button());
-        p.drawRect(rect);
+    // 根据按下状态调整颜色
+    if (pressed) {
+        buttonColor = buttonColor.darker(120); // 按下时变暗
     }
     
-    // 5. 绘制按钮符号
-    p.drawText(buttons[0], Qt::AlignCenter, "⤒");
-    p.drawText(buttons[1], Qt::AlignCenter, "▲");
-    p.drawText(buttons[2], Qt::AlignCenter, "▼");
-    p.drawText(buttons[3], Qt::AlignCenter, "⤓");
+    // 绘制按钮主体
+    p.fillRect(rect, buttonColor);
+    
+    // 绘制3D边框效果
+    if (pressed) {
+        // 按下状态 - 内凹效果
+        p.setPen(palette().dark().color());
+        p.drawLine(rect.topLeft(), rect.topRight());
+        p.drawLine(rect.topLeft(), rect.bottomLeft());
+        
+        p.setPen(palette().light().color());
+        p.drawLine(rect.topRight(), rect.bottomRight());
+        p.drawLine(rect.bottomLeft(), rect.bottomRight());
+    } else {
+        // 正常状态 - 凸起效果
+        p.setPen(palette().light().color());
+        p.drawLine(rect.topLeft(), rect.topRight());
+        p.drawLine(rect.topLeft(), rect.bottomLeft());
+        
+        p.setPen(palette().dark().color());
+        p.drawLine(rect.topRight(), rect.bottomRight());
+        p.drawLine(rect.bottomLeft(), rect.bottomRight());
+    }
+    
+    // 绘制文本
+    p.setPen(palette().buttonText().color());
+    p.drawText(rect, Qt::AlignCenter, text);
 }
 
 void CustomScrollBar::mousePressEvent(QMouseEvent *event)
 {
     if (topButtonRect().contains(event->pos())) {
-        setValue(minimum());
+        m_topButtonPressed = true;
+        update(topButtonRect());
+        QTimer::singleShot(150, this, [this]() {
+            m_topButtonPressed = false;
+            update(topButtonRect());
+            setValue(minimum());
+        });
         return;
     }
     if (pageUpButtonRect().contains(event->pos())) {
-        triggerAction(QAbstractSlider::SliderPageStepSub);
+        m_pageUpButtonPressed = true;
+        update(pageUpButtonRect());
+        QTimer::singleShot(150, this, [this]() {
+            m_pageUpButtonPressed = false;
+            update(pageUpButtonRect());
+            triggerAction(QAbstractSlider::SliderPageStepSub);
+        });
         return;
     }
     if (pageDownButtonRect().contains(event->pos())) {
-        triggerAction(QAbstractSlider::SliderPageStepAdd);
+        m_pageDownButtonPressed = true;
+        update(pageDownButtonRect());
+        QTimer::singleShot(150, this, [this]() {
+            m_pageDownButtonPressed = false;
+            update(pageDownButtonRect());
+            triggerAction(QAbstractSlider::SliderPageStepAdd);
+        });
         return;
     }
     if (bottomButtonRect().contains(event->pos())) {
-        setValue(maximum());
+        m_bottomButtonPressed = true;
+        update(bottomButtonRect());
+        QTimer::singleShot(150, this, [this]() {
+            m_bottomButtonPressed = false;
+            update(bottomButtonRect());
+            setValue(maximum());
+        });
         return;
     }
     
@@ -182,7 +224,6 @@ void CustomScrollBar::mouseReleaseEvent(QMouseEvent *event)
 {
     if (m_dragging) {
         m_dragging = false;
-        update(); // 重绘以更新滑块状态
         return;
     }
     
