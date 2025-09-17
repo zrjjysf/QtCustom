@@ -12,7 +12,7 @@ int customscrollbar_demonstrate(int argc, char *argv[])
 
     // 填充测试内容
     for (int i = 1; i <= 100; ++i) {
-        edit.append(QString("这是第 %1 行内容").arg(i));
+        edit.append(QString::fromUtf8("这是第 %1 行内容").arg(i));
     }
 
     edit.resize(400, 300);

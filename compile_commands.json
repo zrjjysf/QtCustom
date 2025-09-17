@@ -1,42 +1,50 @@
 [
 {
-  "directory": "/home/cx/development/QtCustom/build",
-  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/cx/development/QtCustom/build/QtCustom_autogen/include -I/home/cx/development/QtCustom -I/home/cx/development/QtCustom/batterywgt -I/home/cx/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -fPIC -std=gnu++11 -o CMakeFiles/QtCustom.dir/QtCustom_autogen/mocs_compilation.cpp.o -c /home/cx/development/QtCustom/build/QtCustom_autogen/mocs_compilation.cpp",
-  "file": "/home/cx/development/QtCustom/build/QtCustom_autogen/mocs_compilation.cpp"
+  "directory": "/home/jojoc/development/QtCustom/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_SVG_LIB -DQT_WIDGETS_LIB -I/home/jojoc/development/QtCustom/build/QtCustom_autogen/include -I/home/jojoc/development/QtCustom -I/home/jojoc/development/QtCustom/batterywgt -I/home/jojoc/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtSvg -std=gnu++11 -fPIC -o CMakeFiles/QtCustom.dir/QtCustom_autogen/mocs_compilation.cpp.o -c /home/jojoc/development/QtCustom/build/QtCustom_autogen/mocs_compilation.cpp",
+  "file": "/home/jojoc/development/QtCustom/build/QtCustom_autogen/mocs_compilation.cpp",
+  "output": "CMakeFiles/QtCustom.dir/QtCustom_autogen/mocs_compilation.cpp.o"
 },
 {
-  "directory": "/home/cx/development/QtCustom/build",
-  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/cx/development/QtCustom/build/QtCustom_autogen/include -I/home/cx/development/QtCustom -I/home/cx/development/QtCustom/batterywgt -I/home/cx/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -fPIC -std=gnu++11 -o CMakeFiles/QtCustom.dir/batterywgt/batterywgt.cpp.o -c /home/cx/development/QtCustom/batterywgt/batterywgt.cpp",
-  "file": "/home/cx/development/QtCustom/batterywgt/batterywgt.cpp"
+  "directory": "/home/jojoc/development/QtCustom/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_SVG_LIB -DQT_WIDGETS_LIB -I/home/jojoc/development/QtCustom/build/QtCustom_autogen/include -I/home/jojoc/development/QtCustom -I/home/jojoc/development/QtCustom/batterywgt -I/home/jojoc/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtSvg -std=gnu++11 -fPIC -o CMakeFiles/QtCustom.dir/batterywgt/batterywgt.cpp.o -c /home/jojoc/development/QtCustom/batterywgt/batterywgt.cpp",
+  "file": "/home/jojoc/development/QtCustom/batterywgt/batterywgt.cpp",
+  "output": "CMakeFiles/QtCustom.dir/batterywgt/batterywgt.cpp.o"
 },
 {
-  "directory": "/home/cx/development/QtCustom/build",
-  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/cx/development/QtCustom/build/QtCustom_autogen/include -I/home/cx/development/QtCustom -I/home/cx/development/QtCustom/batterywgt -I/home/cx/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -fPIC -std=gnu++11 -o CMakeFiles/QtCustom.dir/batterywgt/demonstrate.cpp.o -c /home/cx/development/QtCustom/batterywgt/demonstrate.cpp",
-  "file": "/home/cx/development/QtCustom/batterywgt/demonstrate.cpp"
+  "directory": "/home/jojoc/development/QtCustom/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_SVG_LIB -DQT_WIDGETS_LIB -I/home/jojoc/development/QtCustom/build/QtCustom_autogen/include -I/home/jojoc/development/QtCustom -I/home/jojoc/development/QtCustom/batterywgt -I/home/jojoc/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtSvg -std=gnu++11 -fPIC -o CMakeFiles/QtCustom.dir/batterywgt/demonstrate.cpp.o -c /home/jojoc/development/QtCustom/batterywgt/demonstrate.cpp",
+  "file": "/home/jojoc/development/QtCustom/batterywgt/demonstrate.cpp",
+  "output": "CMakeFiles/QtCustom.dir/batterywgt/demonstrate.cpp.o"
 },
 {
-  "directory": "/home/cx/development/QtCustom/build",
-  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/cx/development/QtCustom/build/QtCustom_autogen/include -I/home/cx/development/QtCustom -I/home/cx/development/QtCustom/batterywgt -I/home/cx/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -fPIC -std=gnu++11 -o CMakeFiles/QtCustom.dir/customscrollbar/customscrollbar.cpp.o -c /home/cx/development/QtCustom/customscrollbar/customscrollbar.cpp",
-  "file": "/home/cx/development/QtCustom/customscrollbar/customscrollbar.cpp"
+  "directory": "/home/jojoc/development/QtCustom/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_SVG_LIB -DQT_WIDGETS_LIB -I/home/jojoc/development/QtCustom/build/QtCustom_autogen/include -I/home/jojoc/development/QtCustom -I/home/jojoc/development/QtCustom/batterywgt -I/home/jojoc/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtSvg -std=gnu++11 -fPIC -o CMakeFiles/QtCustom.dir/customscrollbar/customscrollbar.cpp.o -c /home/jojoc/development/QtCustom/customscrollbar/customscrollbar.cpp",
+  "file": "/home/jojoc/development/QtCustom/customscrollbar/customscrollbar.cpp",
+  "output": "CMakeFiles/QtCustom.dir/customscrollbar/customscrollbar.cpp.o"
 },
 {
-  "directory": "/home/cx/development/QtCustom/build",
-  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/cx/development/QtCustom/build/QtCustom_autogen/include -I/home/cx/development/QtCustom -I/home/cx/development/QtCustom/batterywgt -I/home/cx/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -fPIC -std=gnu++11 -o CMakeFiles/QtCustom.dir/customscrollbar/demonstrate.cpp.o -c /home/cx/development/QtCustom/customscrollbar/demonstrate.cpp",
-  "file": "/home/cx/development/QtCustom/customscrollbar/demonstrate.cpp"
+  "directory": "/home/jojoc/development/QtCustom/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_SVG_LIB -DQT_WIDGETS_LIB -I/home/jojoc/development/QtCustom/build/QtCustom_autogen/include -I/home/jojoc/development/QtCustom -I/home/jojoc/development/QtCustom/batterywgt -I/home/jojoc/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtSvg -std=gnu++11 -fPIC -o CMakeFiles/QtCustom.dir/customscrollbar/demonstrate.cpp.o -c /home/jojoc/development/QtCustom/customscrollbar/demonstrate.cpp",
+  "file": "/home/jojoc/development/QtCustom/customscrollbar/demonstrate.cpp",
+  "output": "CMakeFiles/QtCustom.dir/customscrollbar/demonstrate.cpp.o"
 },
 {
-  "directory": "/home/cx/development/QtCustom/build",
-  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/cx/development/QtCustom/build/QtCustom_autogen/include -I/home/cx/development/QtCustom -I/home/cx/development/QtCustom/batterywgt -I/home/cx/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -fPIC -std=gnu++11 -o CMakeFiles/QtCustom.dir/tool.cpp.o -c /home/cx/development/QtCustom/tool.cpp",
-  "file": "/home/cx/development/QtCustom/tool.cpp"
+  "directory": "/home/jojoc/development/QtCustom/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_SVG_LIB -DQT_WIDGETS_LIB -I/home/jojoc/development/QtCustom/build/QtCustom_autogen/include -I/home/jojoc/development/QtCustom -I/home/jojoc/development/QtCustom/batterywgt -I/home/jojoc/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtSvg -std=gnu++11 -fPIC -o CMakeFiles/QtCustom.dir/tool.cpp.o -c /home/jojoc/development/QtCustom/tool.cpp",
+  "file": "/home/jojoc/development/QtCustom/tool.cpp",
+  "output": "CMakeFiles/QtCustom.dir/tool.cpp.o"
 },
 {
-  "directory": "/home/cx/development/QtCustom/build",
-  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/cx/development/QtCustom/build/QtCustom_autogen/include -I/home/cx/development/QtCustom -I/home/cx/development/QtCustom/batterywgt -I/home/cx/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -fPIC -std=gnu++11 -o CMakeFiles/QtCustom.dir/main.cpp.o -c /home/cx/development/QtCustom/main.cpp",
-  "file": "/home/cx/development/QtCustom/main.cpp"
+  "directory": "/home/jojoc/development/QtCustom/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_SVG_LIB -DQT_WIDGETS_LIB -I/home/jojoc/development/QtCustom/build/QtCustom_autogen/include -I/home/jojoc/development/QtCustom -I/home/jojoc/development/QtCustom/batterywgt -I/home/jojoc/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtSvg -std=gnu++11 -fPIC -o CMakeFiles/QtCustom.dir/main.cpp.o -c /home/jojoc/development/QtCustom/main.cpp",
+  "file": "/home/jojoc/development/QtCustom/main.cpp",
+  "output": "CMakeFiles/QtCustom.dir/main.cpp.o"
 },
 {
-  "directory": "/home/cx/development/QtCustom/build",
-  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/cx/development/QtCustom/build/QtCustom_autogen/include -I/home/cx/development/QtCustom -I/home/cx/development/QtCustom/batterywgt -I/home/cx/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -fPIC -std=gnu++11 -o CMakeFiles/QtCustom.dir/qrc_resources.cpp.o -c /home/cx/development/QtCustom/build/qrc_resources.cpp",
-  "file": "/home/cx/development/QtCustom/build/qrc_resources.cpp"
+  "directory": "/home/jojoc/development/QtCustom/build",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_SVG_LIB -DQT_WIDGETS_LIB -I/home/jojoc/development/QtCustom/build/QtCustom_autogen/include -I/home/jojoc/development/QtCustom -I/home/jojoc/development/QtCustom/batterywgt -I/home/jojoc/development/QtCustom/customscrollbar -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtCore -isystem /opt/Qt5.14.2/5.14.2/gcc_64/./mkspecs/linux-g++ -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtGui -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtWidgets -isystem /opt/Qt5.14.2/5.14.2/gcc_64/include/QtSvg -std=gnu++11 -fPIC -o CMakeFiles/QtCustom.dir/qrc_resources.cpp.o -c /home/jojoc/development/QtCustom/build/qrc_resources.cpp",
+  "file": "/home/jojoc/development/QtCustom/build/qrc_resources.cpp",
+  "output": "CMakeFiles/QtCustom.dir/qrc_resources.cpp.o"
 }
 ]

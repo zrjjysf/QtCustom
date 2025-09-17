@@ -1,0 +1,8 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- 箭杆 -->
+  <line x1="32" y1="44" x2="32" y2="8" stroke="black" stroke-width="3"/>
+  <!-- 箭头 -->
+  <polyline points="20,32 32,44 44,32" fill="none" stroke="black" stroke-width="3"/>
+  <!-- 下方横线 -->
+  <line x1="16" y1="48" x2="48" y2="48" stroke="black" stroke-width="3"/>
+</svg>

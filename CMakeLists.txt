@@ -50,6 +50,7 @@ target_link_libraries(${PROJECT_NAME}
     Qt5::Core
     Qt5::Gui
     Qt5::Widgets
+    Qt5::Svg
 )
 
 # 安装额外的样式文件（可选）
