@@ -3,6 +3,7 @@
 #include <QMouseEvent>
 #include <QStyleOptionSlider>
 #include <QPropertyAnimation>
+#include <QSvgRenderer>
 #include <QTimer>
 #include "tool.h"
 
@@ -134,6 +135,13 @@ void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, const QString
     // 绘制文本
     p.setPen(palette().buttonText().color());
     p.drawText(rect, Qt::AlignCenter, text);
+    QSvgRenderer svg(svgPath); // svgPath 可以是 ":/icons/up_arrow.svg"
+    if (svg.isValid()) {
+        QRectF targetRect = rect.adjusted(4, 4, -4, -4); // 留点边距
+        svg.render(&p, targetRect);
+    } else {
+        qWarning() << "SVG 加载失败：" << svgPath;
+    }
 }
 
 void CustomScrollBar::mousePressEvent(QMouseEvent *event)

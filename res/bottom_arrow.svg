@@ -1,0 +1,10 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(180 32 32)">
+    <!-- 箭杆 -->
+    <line x1="32" y1="20" x2="32" y2="56" stroke="black" stroke-width="3"/>
+    <!-- 箭头 -->
+    <polyline points="20,32 32,20 44,32" fill="none" stroke="black" stroke-width="3"/>
+    <!-- 上方横线 -->
+    <line x1="16" y1="16" x2="48" y2="16" stroke="black" stroke-width="3"/>
+  </g>
+</svg>
