@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QStyleOptionSlider>
+#include <QStyle>
 #include "tool.h"
 
 CustomScrollBar::CustomScrollBar(QWidget *parent)
@@ -58,21 +59,40 @@ void CustomScrollBar::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
     
     QPainter p(this);
+    
     // 1. 绘制背景
     p.fillRect(rect(), palette().window());
     
-    // 2. 绘制轨道
-    QRect groove = grooveRect();
-    p.fillRect(groove, palette().base());
-    p.setPen(palette().mid().color());//使用背景色
-    p.drawRect(groove.adjusted(0, 0, -1, -1));
+    // 2. 使用QStyle绘制轨道
+    QStyleOptionSlider opt;
+    initStyleOption(&opt);
     
-    // 3. 绘制滑块
-    QRect slider = sliderRect();
-    if (slider.isValid()) {
-        p.fillRect(slider, palette().button());
-        p.setPen(palette().shadow().color());
-        p.drawRect(slider.adjusted(0, 0, -1, -1));
+    // 设置轨道的矩形区域
+    QRect groove = grooveRect();
+    opt.rect = groove;
+    opt.subControls = QStyle::SC_ScrollBarGroove;
+    
+    // 绘制轨道
+    style()->drawComplexControl(QStyle::CC_ScrollBar, &opt, &p, this);
+    
+    // 3. 使用QStyle绘制滑块
+    if (maximum() != minimum()) {
+        // 创建一个新的选项用于滑块
+        QStyleOptionSlider sliderOpt;
+        initStyleOption(&sliderOpt);
+        
+        // 设置滑块的矩形区域
+        QRect slider = sliderRect();
+        sliderOpt.rect = slider;
+        sliderOpt.subControls = QStyle::SC_ScrollBarSlider;
+        
+        // 设置滑块状态
+        if (m_dragging) {
+            sliderOpt.state |= QStyle::State_Sunken;
+        }
+        
+        // 绘制滑块
+        style()->drawComplexControl(QStyle::CC_ScrollBar, &sliderOpt, &p, this);
     }
     
     // 4. 绘制按钮
@@ -162,6 +182,7 @@ void CustomScrollBar::mouseReleaseEvent(QMouseEvent *event)
 {
     if (m_dragging) {
         m_dragging = false;
+        update(); // 重绘以更新滑块状态
         return;
     }
     
