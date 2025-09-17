@@ -25,7 +25,7 @@ private:
     QRect grooveRect() const;
     QRect sliderRect() const;
     
-    void draw3DButton(QPainter &p, const QRect &rect, const QString &svgString, bool pressed);
+    void draw3DButton(QPainter &p, const QRect &rect, const QString &svg, bool pressed);
     
     bool m_dragging;
     QPoint m_dragStartPos;

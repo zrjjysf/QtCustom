@@ -8,35 +8,6 @@
 #include "tool.h"
 #include <QString>
 
-constexpr const char* turn_top = R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <!-- 箭杆 -->
-  <line x1="32" y1="20" x2="32" y2="56" stroke="black" stroke-width="3"/>
-  <!-- 箭头 -->
-  <polyline points="20,32 32,20 44,32" fill="none" stroke="black" stroke-width="3"/>
-  <!-- 上方横线 -->
-  <line x1="16" y1="16" x2="48" y2="16" stroke="black" stroke-width="3"/>
-</svg>
-)";
-
-constexpr const char* turn_bottom = R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <!-- 箭杆 -->
-  <line x1="32" y1="44" x2="32" y2="8" stroke="black" stroke-width="3"/>
-  <!-- 箭头 -->
-  <polyline points="20,32 32,44 44,32" fill="none" stroke="black" stroke-width="3"/>
-  <!-- 下方横线 -->
-  <line x1="16" y1="48" x2="48" y2="48" stroke="black" stroke-width="3"/>
-</svg>
-)";
-
-constexpr const char* turn_up = R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <polygon points="12,52 32,12 52,52" fill="black"/>
-</svg>
-)";
-constexpr const char* turn_down = R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <polygon points="12,12 52,12 32,52" fill="black"/>
-</svg>
-)";
-
 CustomScrollBar::CustomScrollBar(QWidget *parent)
     : QScrollBar(Qt::Vertical, parent), 
       m_dragging(false),
@@ -122,13 +93,13 @@ void CustomScrollBar::paintEvent(QPaintEvent *event)
     }
     
     // 4. 绘制按钮 - 使用3D效果
-    draw3DButton(p, topButtonRect(), turn_top, m_topButtonPressed);
-    draw3DButton(p, pageUpButtonRect(), turn_up, m_pageUpButtonPressed);
-    draw3DButton(p, pageDownButtonRect(), turn_down, m_pageDownButtonPressed);
-    draw3DButton(p, bottomButtonRect(), turn_bottom, m_bottomButtonPressed);
+    draw3DButton(p, topButtonRect(), "turn_top", m_topButtonPressed);
+    draw3DButton(p, pageUpButtonRect(), "turn_up", m_pageUpButtonPressed);
+    draw3DButton(p, pageDownButtonRect(), "turn_down", m_pageDownButtonPressed);
+    draw3DButton(p, bottomButtonRect(), "turn_bottom", m_bottomButtonPressed);
 }
 
-void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, const QString &svgString, bool pressed)
+void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, const QString &svgRes, bool pressed)
 {
     // 绘制3D效果的按钮
     QColor buttonColor = palette().button().color();
@@ -166,7 +137,7 @@ void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, const QString
     p.setPen(palette().buttonText().color());
     // p.drawText(rect, Qt::AlignCenter, text);
     // QByteArray::fromStdString(svgString.toStdString());
-    QSvgRenderer svg(QByteArray::fromStdString(svgString.toStdString())); // svgPath 可以是 ":/icons/up_arrow.svg"
+    QSvgRenderer svg(QString(":/res/%1.svg").arg(svgRes)); // svgPath 可以是 ":/icons/up_arrow.svg"
     if (svg.isValid()) {
         // QRectF targetRect = rect.adjusted(4, 4, -4, -4); // 留点边距
         svg.render(&p, rect);
