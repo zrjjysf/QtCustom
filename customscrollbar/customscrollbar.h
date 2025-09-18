@@ -10,7 +10,7 @@ class CustomScrollBar : public QScrollBar
 {
     Q_OBJECT
 public:
-    explicit CustomScrollBar(QWidget *parent = nullptr);
+    explicit CustomScrollBar(Qt::Orientation orientation, QWidget *parent = nullptr);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -25,8 +25,8 @@ private:
     QRect bottomButtonRect() const;
     QRect grooveRect() const;
     QRect sliderRect() const;
-    int indicatorHeight() const;
-    
+    int indicatorThickness() const;
+
     void draw3DButton(QPainter &p, const QRect &rect, QSvgRenderer* renderer, bool pressed);
     void draw3DButton(QPainter &p, const QRect &rect, const QString &text, bool pressed);
     
@@ -39,6 +39,7 @@ private:
     bool m_pageUpButtonPressed;
     bool m_pageDownButtonPressed;
     bool m_bottomButtonPressed;
+
     QSvgRenderer* m_turnTopRenderer;
     QSvgRenderer* m_turnUpRenderer;
     QSvgRenderer* m_turnDownRenderer;

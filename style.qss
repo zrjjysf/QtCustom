@@ -27,5 +27,6 @@ BatteryWgt {
 /* 自定义滚动条样式 */
 CustomScrollBar
 {
-    min-width:20px;
+    min-width:20px; 
+    min-height:20px; 
 }
