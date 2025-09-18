@@ -8,6 +8,33 @@
 #include "tool.h"
 #include <QString>
 
+QSvgRenderer turn_top(QByteArray(R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- 箭杆 -->
+  <line x1="32" y1="20" x2="32" y2="56" stroke="black" stroke-width="3"/>
+  <!-- 箭头 -->
+  <polyline points="20,32 32,20 44,32" fill="none" stroke="black" stroke-width="3"/>
+  <!-- 上方横线 -->
+  <line x1="16" y1="16" x2="48" y2="16" stroke="black" stroke-width="3"/>
+</svg>
+)"));
+QSvgRenderer turn_up(QByteArray(R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="12,52 32,12 52,52" fill="black"/>
+</svg>
+)"));
+QSvgRenderer turn_down(QByteArray(R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="12,12 52,12 32,52" fill="black"/>
+</svg>
+)"));
+QSvgRenderer turn_bottom(QByteArray(R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- 箭杆 -->
+  <line x1="32" y1="44" x2="32" y2="8" stroke="black" stroke-width="3"/>
+  <!-- 箭头 -->
+  <polyline points="20,32 32,44 44,32" fill="none" stroke="black" stroke-width="3"/>
+  <!-- 下方横线 -->
+  <line x1="16" y1="48" x2="48" y2="48" stroke="black" stroke-width="3"/>
+</svg>
+)"));
+
 CustomScrollBar::CustomScrollBar(QWidget *parent)
     : QScrollBar(Qt::Vertical, parent), 
       m_dragging(false),
@@ -20,25 +47,27 @@ CustomScrollBar::CustomScrollBar(QWidget *parent)
 }
 
 QRect CustomScrollBar::topButtonRect() const {
-    return QRect(0, 0, width(), width() * 2);
+    return QRect(0, 0, width(), indicatorHight());
 }
 
 QRect CustomScrollBar::pageUpButtonRect() const {
-    return QRect(0, width() * 2, width(), width() * 2);
+    return QRect(0, indicatorHight(), width(), indicatorHight());
 }
 
 QRect CustomScrollBar::pageDownButtonRect() const {
-    return QRect(0, height() - 4 * width(), width(), width() * 2);
+    return QRect(0, height() - indicatorHight()*2, width(), indicatorHight());
 }
 
 QRect CustomScrollBar::bottomButtonRect() const {
-    return QRect(0, height() - 2 * width(), width(), width() * 2);
+    return QRect(0, height() - indicatorHight(), width(), indicatorHight());
 }
 
 // 计算轨道区域（去除了按钮占用的空间）
 QRect CustomScrollBar::grooveRect() const {
-    int buttonHeight = width() * 2;
-    return QRect(0, 2 * buttonHeight, width(), height() - 4 * buttonHeight);
+    return QRect(0, 2 * indicatorHight(), width(), height() - 4 * indicatorHight());
+}
+int CustomScrollBar::indicatorHight() const {
+    return width() * 1.5;
 }
 
 // 计算滑块区域
@@ -93,13 +122,13 @@ void CustomScrollBar::paintEvent(QPaintEvent *event)
     }
     
     // 4. 绘制按钮 - 使用3D效果
-    draw3DButton(p, topButtonRect(), "turn_top", m_topButtonPressed);
-    draw3DButton(p, pageUpButtonRect(), "turn_up", m_pageUpButtonPressed);
-    draw3DButton(p, pageDownButtonRect(), "turn_down", m_pageDownButtonPressed);
-    draw3DButton(p, bottomButtonRect(), "turn_bottom", m_bottomButtonPressed);
+    draw3DButton(p, topButtonRect(), turn_top, m_topButtonPressed);
+    draw3DButton(p, pageUpButtonRect(), turn_up, m_pageUpButtonPressed);
+    draw3DButton(p, pageDownButtonRect(), turn_down, m_pageDownButtonPressed);
+    draw3DButton(p, bottomButtonRect(), turn_bottom, m_bottomButtonPressed);
 }
 
-void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, const QString &svgRes, bool pressed)
+void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, QSvgRenderer &renderer, bool pressed)
 {
     // 绘制3D效果的按钮
     QColor buttonColor = palette().button().color();
@@ -135,13 +164,46 @@ void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, const QString
     
     // 绘制文本
     p.setPen(palette().buttonText().color());
-    // p.drawText(rect, Qt::AlignCenter, text);
-    // QByteArray::fromStdString(svgString.toStdString());
-    QSvgRenderer svg(QString(":/res/%1.svg").arg(svgRes)); // svgPath 可以是 ":/icons/up_arrow.svg"
-    if (svg.isValid()) {
-        // QRectF targetRect = rect.adjusted(4, 4, -4, -4); // 留点边距
-        svg.render(&p, rect);
+    renderer.render(&p, rect);
+}
+
+void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, const QString &text, bool pressed)
+{
+    // 绘制3D效果的按钮
+    QColor buttonColor = palette().button().color();
+    
+    // 根据按下状态调整颜色
+    if (pressed) {
+        buttonColor = buttonColor.darker(120); // 按下时变暗
     }
+    
+    // 绘制按钮主体
+    p.fillRect(rect, buttonColor);
+    
+    // 绘制3D边框效果
+    if (pressed) {
+        // 按下状态 - 内凹效果
+        p.setPen(palette().dark().color());
+        p.drawLine(rect.topLeft(), rect.topRight());
+        p.drawLine(rect.topLeft(), rect.bottomLeft());
+        
+        p.setPen(palette().light().color());
+        p.drawLine(rect.topRight(), rect.bottomRight());
+        p.drawLine(rect.bottomLeft(), rect.bottomRight());
+    } else {
+        // 正常状态 - 凸起效果
+        p.setPen(palette().light().color());
+        p.drawLine(rect.topLeft(), rect.topRight());
+        p.drawLine(rect.topLeft(), rect.bottomLeft());
+        
+        p.setPen(palette().dark().color());
+        p.drawLine(rect.topRight(), rect.bottomRight());
+        p.drawLine(rect.bottomLeft(), rect.bottomRight());
+    }
+    
+    // 绘制文本
+    p.setPen(palette().buttonText().color());
+    p.drawText(rect, Qt::AlignCenter, text);
 }
 
 void CustomScrollBar::mousePressEvent(QMouseEvent *event)

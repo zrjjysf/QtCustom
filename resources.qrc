@@ -1,10 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>style.qss</file>
-        <file>res/turn_top.svg</file>
-        <file>res/turn_up.svg</file>
-        <file>res/turn_bottom.svg</file>
-        <file>res/turn_down.svg</file>
     </qresource>
 </RCC>
 

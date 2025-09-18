@@ -5,6 +5,7 @@
 #include <QRect>
 #include <QPoint>
 
+class QSvgRenderer;
 class CustomScrollBar : public QScrollBar
 {
     Q_OBJECT
@@ -24,8 +25,10 @@ private:
     QRect bottomButtonRect() const;
     QRect grooveRect() const;
     QRect sliderRect() const;
+    int indicatorHight() const;
     
-    void draw3DButton(QPainter &p, const QRect &rect, const QString &svg, bool pressed);
+    void draw3DButton(QPainter &p, const QRect &rect, QSvgRenderer &renderer, bool pressed);
+    void draw3DButton(QPainter &p, const QRect &rect, const QString &text, bool pressed);
     
     bool m_dragging;
     QPoint m_dragStartPos;
