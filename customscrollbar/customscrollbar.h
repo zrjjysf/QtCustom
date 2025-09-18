@@ -25,9 +25,9 @@ private:
     QRect bottomButtonRect() const;
     QRect grooveRect() const;
     QRect sliderRect() const;
-    int indicatorHight() const;
+    int indicatorHeight() const;
     
-    void draw3DButton(QPainter &p, const QRect &rect, QSvgRenderer &renderer, bool pressed);
+    void draw3DButton(QPainter &p, const QRect &rect, QSvgRenderer* renderer, bool pressed);
     void draw3DButton(QPainter &p, const QRect &rect, const QString &text, bool pressed);
     
     bool m_dragging;
@@ -39,6 +39,10 @@ private:
     bool m_pageUpButtonPressed;
     bool m_pageDownButtonPressed;
     bool m_bottomButtonPressed;
+    QSvgRenderer* m_turnTopRenderer;
+    QSvgRenderer* m_turnUpRenderer;
+    QSvgRenderer* m_turnDownRenderer;
+    QSvgRenderer* m_turnBottomRenderer;
 };
 
 #endif // CUSTOMSCROLLBAR_H
