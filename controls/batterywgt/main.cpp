@@ -12,7 +12,7 @@
 #include <QPainter>
 #include "tool.h"
 
-int batterywgt_demonstrate(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
@@ -40,15 +40,13 @@ int batterywgt_demonstrate(int argc, char *argv[])
     statusBarLayout->setSpacing(0);
     // 创建电池控件
     BatteryWgt *battery = new BatteryWgt(true);
-    // QFrame *battery = new QFrame;
-    // QWidget *battery = new QWidget;
     battery->setObjectName("battery");
     battery->setSizePolicy(QSizePolicy::Policy::MinimumExpanding, QSizePolicy::Policy::MinimumExpanding);
 
     statusBarLayout->addWidget(battery);
-    // QTimer* click=new QTimer;
-    // QObject::connect(click,&QTimer::timeout,[battery](){static int per=10;battery->setBatteryPercent(per);per=per>=100?0:per+10;});
-    // click->start(1000);
+    QTimer* click=new QTimer;
+    QObject::connect(click,&QTimer::timeout,[battery](){static int per=10;battery->setBatteryPercent(per);per=per>=100?0:per+10;});
+    click->start(1000);
 
     QTimer::singleShot(0, [&](){
         qDebug()<<"after show - window size:"<<window.size();

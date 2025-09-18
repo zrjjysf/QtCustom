@@ -5,16 +5,18 @@
 #include <QDir>
 #include <QPalette>
 #include <QMetaEnum>
+#include <QCoreApplication>
 
 QString getQSS()
 {
     QString result;
-    QFile qssFile(":/style.qss"); // 如果你放在资源文件中
+    QString appDir = QCoreApplication::applicationDirPath();
+    QFile qssFile(appDir+"/style.qss"); // 如果你放在资源文件中
     if (qssFile.open(QFile::ReadOnly)) {
         result = qssFile.readAll();
         qssFile.close();
     }
-    qDebug()<<result;
+    qDebug().noquote()<<result;
     return result;
 }
 

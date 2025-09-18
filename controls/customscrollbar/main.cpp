@@ -4,7 +4,7 @@
 #include "tool.h"
 
 // 演示自定义滚动条的使用
-int customscrollbar_demonstrate(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
