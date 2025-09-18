@@ -20,3 +20,6 @@ add_subdirectory(common)
 # 各控件子项目
 add_subdirectory(controls/batterywgt)
 add_subdirectory(controls/customscrollbar)
+add_subdirectory(controls/aspectratiowidget)
+add_subdirectory(controls/compareresizewgt)
+add_subdirectory(controls/aspectratiolayout)
