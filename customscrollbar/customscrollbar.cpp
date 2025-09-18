@@ -19,21 +19,21 @@ CustomScrollBar::CustomScrollBar(Qt::Orientation orientation, QWidget *parent)
   <line x1="32" y1="20" x2="32" y2="56" stroke="black" stroke-width="3"/>
   <polyline points="20,32 32,20 44,32" fill="none" stroke="black" stroke-width="3"/>
   <line x1="16" y1="16" x2="48" y2="16" stroke="black" stroke-width="3"/>
-</svg>)"))),
+</svg>)"),this)),
       m_turnUpRenderer(new QSvgRenderer(QByteArray(
           R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <polygon points="12,52 32,12 52,52" fill="black"/>
-</svg>)"))),
+</svg>)"),this)),
       m_turnDownRenderer(new QSvgRenderer(QByteArray(
           R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <polygon points="12,12 52,12 32,52" fill="black"/>
-</svg>)"))),
+</svg>)"),this)),
       m_turnBottomRenderer(new QSvgRenderer(QByteArray(
           R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <line x1="32" y1="44" x2="32" y2="8" stroke="black" stroke-width="3"/>
   <polyline points="20,32 32,44 44,32" fill="none" stroke="black" stroke-width="3"/>
   <line x1="16" y1="48" x2="48" y2="48" stroke="black" stroke-width="3"/>
-</svg>)"))) {
+</svg>)"),this)) {
 }
 
 int CustomScrollBar::indicatorThickness() const {
