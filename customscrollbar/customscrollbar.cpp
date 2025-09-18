@@ -1,17 +1,17 @@
 #include "customscrollbar.h"
-#include <QMouseEvent>
 #include <QPainter>
-#include <QPropertyAnimation>
-#include <QString>
-#include <QStyleOptionSlider>
-#include <QSvgRenderer>
+#include <QMouseEvent>
 #include <QTimer>
+#include <QLinearGradient>
 #include <QTransform>
 
 constexpr int kMinSliderThickness = 10;
-
+inline uint qHash(const QSize &key, uint seed = 0) noexcept {
+    return qHash(qMakePair(key.width(), key.height()), seed);
+}
 CustomScrollBar::CustomScrollBar(Qt::Orientation orientation, QWidget *parent)
-    : QScrollBar(orientation, parent), m_dragging(false),
+    : QScrollBar(orientation, parent),
+      m_dragging(false),
       m_topButtonPressed(false), m_pageUpButtonPressed(false),
       m_pageDownButtonPressed(false), m_bottomButtonPressed(false),
       m_turnTopRenderer(new QSvgRenderer(QByteArray(
@@ -36,58 +36,65 @@ CustomScrollBar::CustomScrollBar(Qt::Orientation orientation, QWidget *parent)
 </svg>)"))) {
 }
 
+QPixmap CustomScrollBar::renderSvgToPixmap(QSvgRenderer *renderer, const QSize &size, QHash<QSize, QPixmap> &cache) const {
+    if (!renderer) return QPixmap();
+    if (cache.contains(size)) return cache[size];
+
+    QImage image(size, QImage::Format_ARGB32_Premultiplied);
+    image.fill(Qt::transparent);
+
+    QPainter p(&image);
+    renderer->render(&p, QRect(QPoint(0, 0), size));
+
+    QPixmap pix = QPixmap::fromImage(image);
+    cache[size] = pix;
+    return pix;
+}
+
 int CustomScrollBar::indicatorThickness() const {
     return orientation() == Qt::Vertical ? width() * 1.5 : height() * 1.5;
 }
 
 QRect CustomScrollBar::topButtonRect() const {
-    if (orientation() == Qt::Vertical)
-        return QRect(0, 0, width(), indicatorThickness());
-    else
-        return QRect(0, 0, indicatorThickness(), height());
+    return orientation() == Qt::Vertical
+        ? QRect(0, 0, width(), indicatorThickness())
+        : QRect(0, 0, indicatorThickness(), height());
 }
 
 QRect CustomScrollBar::pageUpButtonRect() const {
-    if (orientation() == Qt::Vertical)
-        return QRect(0, indicatorThickness(), width(), indicatorThickness());
-    else
-        return QRect(indicatorThickness(), 0, indicatorThickness(), height());
+    return orientation() == Qt::Vertical
+        ? QRect(0, indicatorThickness(), width(), indicatorThickness())
+        : QRect(indicatorThickness(), 0, indicatorThickness(), height());
 }
 
 QRect CustomScrollBar::pageDownButtonRect() const {
-    if (orientation() == Qt::Vertical)
-        return QRect(0, height() - indicatorThickness() * 2, width(), indicatorThickness());
-    else
-        return QRect(width() - indicatorThickness() * 2, 0, indicatorThickness(), height());
+    return orientation() == Qt::Vertical
+        ? QRect(0, height() - indicatorThickness() * 2, width(), indicatorThickness())
+        : QRect(width() - indicatorThickness() * 2, 0, indicatorThickness(), height());
 }
 
 QRect CustomScrollBar::bottomButtonRect() const {
-    if (orientation() == Qt::Vertical)
-        return QRect(0, height() - indicatorThickness(), width(), indicatorThickness());
-    else
-        return QRect(width() - indicatorThickness(), 0, indicatorThickness(), height());
+    return orientation() == Qt::Vertical
+        ? QRect(0, height() - indicatorThickness(), width(), indicatorThickness())
+        : QRect(width() - indicatorThickness(), 0, indicatorThickness(), height());
 }
 
 QRect CustomScrollBar::grooveRect() const {
-    if (orientation() == Qt::Vertical)
-        return QRect(0, 2 * indicatorThickness(), width(), height() - 4 * indicatorThickness());
-    else
-        return QRect(2 * indicatorThickness(), 0, width() - 4 * indicatorThickness(), height());
+    return orientation() == Qt::Vertical
+        ? QRect(0, 2 * indicatorThickness(), width(), height() - 4 * indicatorThickness())
+        : QRect(2 * indicatorThickness(), 0, width() - 4 * indicatorThickness(), height());
 }
 
 QRect CustomScrollBar::sliderRect() const {
-    if (maximum() == minimum() || pageStep() == 0)
-        return QRect();
+    if (maximum() == minimum() || pageStep() == 0) return QRect();
 
     QRect groove = grooveRect();
-
     double pageRatio = static_cast<double>(pageStep()) / (maximum() - minimum() + pageStep());
     int sliderSize = qMax(kMinSliderThickness,
                           static_cast<int>((orientation() == Qt::Vertical ? groove.height() : groove.width()) * pageRatio));
 
     double valueRange = maximum() - minimum();
-    if (valueRange == 0)
-        return QRect();
+    if (valueRange == 0) return QRect();
 
     if (orientation() == Qt::Vertical) {
         double sliderPos = groove.top() + (groove.height() - sliderSize) *
@@ -102,7 +109,6 @@ QRect CustomScrollBar::sliderRect() const {
 
 void CustomScrollBar::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
-
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
 
@@ -119,7 +125,6 @@ void CustomScrollBar::paintEvent(QPaintEvent *event) {
         gradient.setColorAt(0, palette().light().color());
         gradient.setColorAt(1, palette().dark().color());
         p.fillRect(slider, gradient);
-
         p.setPen(palette().shadow().color());
         p.drawRect(slider.adjusted(0, 0, -1, -1));
     }
@@ -135,7 +140,7 @@ void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, QSvgRenderer 
     if (pressed) buttonColor = buttonColor.darker(120);
     p.fillRect(rect, buttonColor);
 
-    // 绘制3D边框
+    // 3D边框
     if (pressed) {
         p.setPen(palette().dark().color());
         p.drawLine(rect.topLeft(), rect.topRight());
@@ -153,7 +158,6 @@ void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, QSvgRenderer 
     }
 
     if (!renderer) return;
-
     QRectF viewBox = renderer->viewBoxF();
     if (viewBox.isEmpty()) return;
 
@@ -167,21 +171,36 @@ void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, QSvgRenderer 
         rect.center().x() - scaledSize.width() / 2.0,
         rect.center().y() - scaledSize.height() / 2.0
     );
-    QRectF targetRect(topLeft, scaledSize);
+    QRect targetRect(topLeft.toPoint(), scaledSize.toSize());
+    // rect = targetRect;
 
-    p.save();
-    if (orientation() == Qt::Horizontal) {
-        // 横向按钮图标旋转90度
-        QTransform transform;
-        transform.translate(rect.center().x(), rect.center().y());
-        transform.rotate(-90);
-        transform.translate(-rect.center().x(), -rect.center().y());
-        p.setTransform(transform, true);
+    QPixmap pix;
+    if (renderer == m_turnTopRenderer) {
+        pix = renderSvgToPixmap(renderer, targetRect.size(), m_topCache);
+    } else if (renderer == m_turnUpRenderer) {
+        pix = renderSvgToPixmap(renderer, targetRect.size(), m_upCache);
+    } else if (renderer == m_turnDownRenderer) {
+        pix = renderSvgToPixmap(renderer, targetRect.size(), m_downCache);
+    } else if (renderer == m_turnBottomRenderer) {
+        pix = renderSvgToPixmap(renderer, targetRect.size(), m_bottomCache);
     }
-    renderer->render(&p, targetRect);
-    p.restore();
-}
 
+    if (!pix.isNull()) {
+        QRect target = QRect(targetRect.center() - QPoint(pix.width()/2, pix.height()/2), pix.size());
+        if (orientation() == Qt::Horizontal) {
+            p.save();
+            QTransform transform;
+            transform.translate(targetRect.center().x(), targetRect.center().y());
+            transform.rotate(-90);
+            transform.translate(-targetRect.center().x(), -targetRect.center().y());
+            p.setTransform(transform, true);
+            p.drawPixmap(target, pix);
+            p.restore();
+        } else {
+            p.drawPixmap(target, pix);
+        }
+    }
+}
 
 void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, const QString &text, bool pressed) {
     QColor buttonColor = palette().button().color();
@@ -207,6 +226,7 @@ void CustomScrollBar::draw3DButton(QPainter &p, const QRect &rect, const QString
     p.setPen(palette().buttonText().color());
     p.drawText(rect, Qt::AlignCenter, text);
 }
+
 
 void CustomScrollBar::mousePressEvent(QMouseEvent *event) {
     if (topButtonRect().contains(event->pos())) {
