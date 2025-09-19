@@ -11,6 +11,7 @@ class CustomScrollBar : public QScrollBar
     Q_OBJECT
 public:
     explicit CustomScrollBar(Qt::Orientation orientation, QWidget *parent = nullptr);
+    
 
 protected:
     void paintEvent(QPaintEvent *event) override;

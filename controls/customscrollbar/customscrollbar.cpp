@@ -15,7 +15,7 @@ CustomScrollBar::CustomScrollBar(Qt::Orientation orientation, QWidget *parent)
       m_topButtonPressed(false), m_pageUpButtonPressed(false),
       m_pageDownButtonPressed(false), m_bottomButtonPressed(false),
       m_turnTopRenderer(new QSvgRenderer(QByteArray(
-          R"(<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          R"(<svg width="64" height="64" viewBox="0 0 64 64">
   <line x1="32" y1="20" x2="32" y2="56" stroke="black" stroke-width="3"/>
   <polyline points="20,32 32,20 44,32" fill="none" stroke="black" stroke-width="3"/>
   <line x1="16" y1="16" x2="48" y2="16" stroke="black" stroke-width="3"/>

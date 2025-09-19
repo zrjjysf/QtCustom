@@ -40,10 +40,15 @@ int main(int argc, char *argv[])
     statusBarLayout->setSpacing(0);
     // 创建电池控件
     BatteryWgt *battery = new BatteryWgt(true);
+    BatteryWgt *battery1 = new BatteryWgt(true);
     battery->setObjectName("battery");
+    battery1->setObjectName("battery");
     battery->setSizePolicy(QSizePolicy::Policy::MinimumExpanding, QSizePolicy::Policy::MinimumExpanding);
+    battery1->setSizePolicy(QSizePolicy::Policy::MinimumExpanding, QSizePolicy::Policy::MinimumExpanding);
 
-    statusBarLayout->addWidget(battery);
+    statusBarLayout->addWidget(battery,1);
+    statusBarLayout->addWidget(battery1,1);
+    statusBarLayout->addStretch(1);
     QTimer* click=new QTimer;
     QObject::connect(click,&QTimer::timeout,[battery](){static int per=10;battery->setBatteryPercent(per);per=per>=100?0:per+10;});
     click->start(1000);

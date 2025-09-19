@@ -1,0 +1,15 @@
+QFrame#statusBar
+{
+    font-size:10pt;
+    min-height: 3.5em;
+    max-height: 3.5em;
+    font-family: 'Microsoft YaHei';
+    background-color:blue;
+    padding: 30px;
+}
+QFrame#statusBar *
+{
+    margin-right: 10px;
+    padding: 1em;
+    background-color: red;
+}

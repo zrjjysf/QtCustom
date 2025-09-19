@@ -14,8 +14,22 @@ int main(int argc, char *argv[])
     QTextEdit edit;
 
     // 设置自定义的滚动条
-    edit.setVerticalScrollBar(new CustomScrollBar(Qt::Orientation::Vertical,&edit));
-    edit.setHorizontalScrollBar(new CustomScrollBar(Qt::Orientation::Horizontal,&edit));
+    CustomScrollBar* vScr = new CustomScrollBar(Qt::Orientation::Vertical,&edit);
+    CustomScrollBar* hScr = new CustomScrollBar(Qt::Orientation::Horizontal,&edit);
+    vScr->setStyleSheet(R"(CustomScrollBar
+    {
+        min-width:20px; 
+        min-height:20px; 
+    })");
+    hScr->setStyleSheet(R"(CustomScrollBar
+    {
+        min-width:20px; 
+        min-height:20px; 
+    })");
+    // vScr->setMinimumHeight(100);
+    // hScr->setMinimumWidth(40);
+    edit.setVerticalScrollBar(vScr);
+    edit.setHorizontalScrollBar(hScr);
     edit.setLineWrapMode(QTextEdit::NoWrap);//禁止换行，这样才能出水平滚动条
     // 填充测试内容
     for (int i = 1; i <= 100; ++i) {
