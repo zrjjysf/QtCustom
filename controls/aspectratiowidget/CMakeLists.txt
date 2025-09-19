@@ -19,4 +19,4 @@ target_link_libraries(AspectRatioWidget
 )
 
 # 复制专属 style.qss 到构建目录
-# configure_file(style.qss style.qss COPYONLY)
+configure_file(style.qss style.qss COPYONLY)

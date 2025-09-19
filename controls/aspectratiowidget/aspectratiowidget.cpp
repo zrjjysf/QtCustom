@@ -1,9 +1,26 @@
 #include "aspectratiowidget.h"
+#include <QDebug>
 
 AspectRatioWidget::AspectRatioWidget(double ratio, QWidget *parent)
     : QWidget(parent), m_ratio(ratio)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+}
+
+void AspectRatioWidget::setRatio(const QString &ratioStr)
+{
+    bool ok;
+    double a = ratioStr.split(':')[0].toDouble(&ok);
+    if(!ok) return;
+    double b = ratioStr.split(':')[1].toDouble(&ok);
+    if(!ok) return;
+    m_ratio=a/b;
+    qDebug()<<m_ratio;
+}
+
+QString AspectRatioWidget::ratio() const
+{
+    return QString::number(m_ratio)+"/1";
 }
 
 void AspectRatioWidget::resizeEvent(QResizeEvent *event)
@@ -23,6 +40,7 @@ void AspectRatioWidget::resizeEvent(QResizeEvent *event)
         int expectedW = int(h * m_ratio);
         resize(expectedW, h);
     }
+    qDebug()<<rect();
 }
 
 void AspectRatioWidget::paintEvent(QPaintEvent *)

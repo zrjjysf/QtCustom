@@ -5,9 +5,10 @@
 #include <QStyle>
 #include <QDebug>
 #include <QStyleOptionFrame>
+#include <QResizeEvent>
 
 BatteryWgt::BatteryWgt(bool showText, QWidget *parent)
-    : QFrame(parent), m_needShowText(showText)
+    : QFrame(parent), m_needShowText(showText),m_svgRect(96, 224, 896, 576)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     setTextVisible(showText);
@@ -20,7 +21,26 @@ QSize BatteryWgt::sizeHint() const
     // 默认尺寸为 128x128，适合显示电池图形和文本
     return QSize(12, 12);
 }
+void BatteryWgt::resizeEvent(QResizeEvent *event)
+{
+    QSize newSize = event->size();
+    int w = newSize.width();
+    int h = newSize.height();
+    double aspectRatio = m_svgRect.width() / m_svgRect.height();
 
+    // 按宽度算高度
+    int expectedH = int(w / aspectRatio);
+
+    if (expectedH <= h) {
+        // 宽度主导
+        resize(w, expectedH);
+    } else {
+        // 高度主导
+        int expectedW = int(h * aspectRatio);
+        resize(expectedW, h);
+    }
+    qDebug()<<rect();
+}
 
 void BatteryWgt::addConfig(int threshold, QColor col)
 {
@@ -73,12 +93,11 @@ void BatteryWgt::paintEvent(QPaintEvent *)
     painter.setRenderHint(QPainter::Antialiasing);
 
     // 电池图形原始尺寸（SVG参考）
-    QRectF svgRect(96, 224, 896, 576);
-    double aspectRatio = svgRect.width() / svgRect.height();
+    double aspectRatio = m_svgRect.width() / m_svgRect.height();
 
 
     {
-                // 留出边距以防边框被裁剪
+        // 留出边距以防边框被裁剪
         // const qreal margin = 4.0;
         QRectF availableRect = contentsRect();
         // QRectF availableRect = rect().adjusted(margin, margin, -margin, -margin);
@@ -96,10 +115,10 @@ void BatteryWgt::paintEvent(QPaintEvent *)
         }
 
         // 坐标映射函数
-        auto mapX = [&](qreal x) { return targetRect.left() + (x - svgRect.left()) / svgRect.width() * targetRect.width(); };
-        auto mapY = [&](qreal y) { return targetRect.top() + (y - svgRect.top()) / svgRect.height() * targetRect.height(); };
-        auto mapW = [&](qreal w) { return w / svgRect.width() * targetRect.width(); };
-        auto mapH = [&](qreal h) { return h / svgRect.height() * targetRect.height(); };
+        auto mapX = [&](qreal x) { return targetRect.left() + (x - m_svgRect.left()) / m_svgRect.width() * targetRect.width(); };
+        auto mapY = [&](qreal y) { return targetRect.top() + (y - m_svgRect.top()) / m_svgRect.height() * targetRect.height(); };
+        auto mapW = [&](qreal w) { return w / m_svgRect.width() * targetRect.width(); };
+        auto mapH = [&](qreal h) { return h / m_svgRect.height() * targetRect.height(); };
 
         // 外壳
         qreal shellPenWidth = mapW(32);

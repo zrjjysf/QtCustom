@@ -1,0 +1,4 @@
+AspectRatioWidget
+{
+    qproperty-ratio:"1:2";
+}

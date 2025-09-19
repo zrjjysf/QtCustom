@@ -8,8 +8,12 @@
 class AspectRatioWidget : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(QString ratio READ ratio WRITE setRatio)
 public:
     explicit AspectRatioWidget(double ratio, QWidget *parent = nullptr);
+
+    void setRatio(const QString &ratioStr);
+    QString ratio() const; 
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

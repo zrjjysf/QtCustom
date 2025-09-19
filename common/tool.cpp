@@ -5,7 +5,11 @@
 #include <QDir>
 #include <QPalette>
 #include <QMetaEnum>
-#include <QCoreApplication>
+#include <QApplication>
+#include <QStyleFactory>
+#include <QStyle>
+#include <QWidget>
+#include <QAbstractScrollArea>
 
 QString getQSS()
 {
@@ -75,4 +79,43 @@ void dumpPaletteColors(const QPalette& palette)
 
     file.close();
     qDebug() << "颜色信息已写入：" << filePath;
+}
+
+void cleanQSS()
+{
+    qApp->setStyleSheet(QString());
+
+    QStyle *fresh = QStyleFactory::create(QStringLiteral("Fusion"));
+    qApp->setStyle(fresh);
+
+    qApp->setPalette(qApp->style()->standardPalette());
+    // 遍历所有控件进行重置
+    for (QWidget *w : QApplication::allWidgets()) {
+        // 清理局部 QSS
+        w->setStyleSheet(QString());
+        // 调色板恢复为应用标准
+        w->setPalette(qApp->style()->standardPalette());
+        // 恢复字体为默认
+        w->setFont(QFont());
+
+        // 常被 QSS 污染的 viewport 清理
+        if (auto sa = qobject_cast<QAbstractScrollArea *>(w)) {
+            if (QWidget *vp = sa->viewport()) {
+                vp->setStyleSheet(QString());
+                vp->setPalette(qApp->style()->standardPalette());
+                vp->setFont(QFont());
+                // vp->setAttribute(Qt::WA_StyledBackground, false);
+                // vp->setAutoFillBackground(false);
+
+                qApp->style()->unpolish(vp);
+                qApp->style()->polish(vp);
+                vp->update();
+            }
+        }
+
+        // 重新应用 style
+        qApp->style()->unpolish(w);
+        qApp->style()->polish(w);
+        w->update();
+    }
 }

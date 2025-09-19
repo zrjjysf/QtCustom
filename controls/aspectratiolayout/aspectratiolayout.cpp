@@ -32,11 +32,9 @@ void AspectRatioLayout::setGeometry(const QRect &rect) {
     QLayout::setGeometry(rect);
 
     if (count() > 0) {
-        // 获取父控件的宽高
         int parentWidth = rect.width();
         int parentHeight = rect.height();
 
-        // 根据宽高比计算出目标宽度和高度
         int targetWidth = parentWidth;
         int targetHeight = int(targetWidth / m_ratio);
 
@@ -45,12 +43,35 @@ void AspectRatioLayout::setGeometry(const QRect &rect) {
             targetWidth = int(targetHeight * m_ratio);
         }
 
-        // 将目标宽高分配给所有子控件
+        QRect targetRect(
+            rect.x() + (parentWidth - targetWidth) / 2,
+            rect.y() + (parentHeight - targetHeight) / 2,
+            targetWidth,
+            targetHeight
+        );
+
         for (int i = 0; i < count(); ++i) {
-            QLayoutItem *item = itemAt(i);
-            if (item) {
-                item->setGeometry(QRect(rect.topLeft(), QSize(targetWidth, targetHeight)));
+            if (auto *item = itemAt(i)) {
+                item->setGeometry(targetRect);
             }
         }
     }
+}
+
+QSize AspectRatioLayout::sizeHint() const {
+    if (m_items.isEmpty()) {
+        return QSize(160, 90);  // 默认16:9
+    }
+    return m_items.first()->sizeHint();
+}
+
+QSize AspectRatioLayout::minimumSize() const {
+    if (m_items.isEmpty()) {
+        return QSize(16, 9);
+    }
+    return m_items.first()->minimumSize();
+}
+
+Qt::Orientations AspectRatioLayout::expandingDirections() const {
+    return Qt::Horizontal | Qt::Vertical;
 }

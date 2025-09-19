@@ -21,6 +21,7 @@ public:
     void setBatteryColorConfig(const QString &configStr);
     QString batteryColorConfig() const;
     QSize sizeHint() const override;
+    void resizeEvent(QResizeEvent *event) override;
 protected:
     void paintEvent(QPaintEvent *event) override;
 
@@ -28,6 +29,7 @@ private:
     int m_iBatteryPercent = -1;
     bool m_needShowText = true;
     QMap<int, QColor> m_configMap;
+    const QRectF m_svgRect;
 };
 
 #endif // BATTERYWGT_H

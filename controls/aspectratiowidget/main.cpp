@@ -4,10 +4,12 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 #include "aspectratiowidget.h"
+#include "tool.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setStyleSheet(getQSS());
 
     QWidget window;
     window.setWindowTitle("Aspect Ratio Widget Demo");
@@ -25,6 +27,10 @@ int main(int argc, char *argv[])
 
     mainLayout->addLayout(controlLayout);
     mainLayout->addWidget(ratioWidget, 1);
+    
+    QPushButton *appQSS = new QPushButton("applicationQSS");
+    controlLayout->addWidget(appQSS);
+    QObject::connect(appQSS, &QPushButton::pressed,[&](){cleanQSS();a.setStyleSheet(getQSS());});
 
     // 切换布局
     QObject::connect(btnH, &QPushButton::clicked, [&]() {

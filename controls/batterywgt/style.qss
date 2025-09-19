@@ -18,11 +18,10 @@ QFrame
 
 BatteryWgt {
     qproperty-batteryColorConfig: "20:#ff0000;50:#ffaa00;100:#00ff00";
-    margin:10px;
-    padding:10px;
-    border:10px;
+    margin:20px;
+    padding:20px;
+    border:5px;
 }
-
 
 /* 自定义滚动条样式 */
 CustomScrollBar

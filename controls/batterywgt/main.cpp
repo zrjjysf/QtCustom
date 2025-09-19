@@ -48,6 +48,10 @@ int main(int argc, char *argv[])
     QObject::connect(click,&QTimer::timeout,[battery](){static int per=10;battery->setBatteryPercent(per);per=per>=100?0:per+10;});
     click->start(1000);
 
+    QPushButton *appQSS = new QPushButton("applicationQSS");
+    statusBarLayout->addWidget(appQSS);
+    QObject::connect(appQSS, &QPushButton::pressed,[&](){cleanQSS();app.setStyleSheet(getQSS());});
+    // QObject::connect(appQSS, &QPushButton::released,[&](){app.setStyleSheet(getQSS());});
     QTimer::singleShot(0, [&](){
         qDebug()<<"after show - window size:"<<window.size();
         qDebug()<<"after show - statusBar size:"<<statusBar->size();
