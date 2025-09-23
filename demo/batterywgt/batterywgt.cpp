@@ -50,7 +50,7 @@ void BatteryWgt::addConfig(int threshold, QColor col)
 
 void BatteryWgt::setBatteryPercent(int percent)
 {
-    m_iBatteryPercent = percent;
+    m_iBatteryPercent = percent>100?100:(percent<0?0:percent);
     update();
 }
 
@@ -120,30 +120,9 @@ void BatteryWgt::paintEvent(QPaintEvent *)
         auto mapW = [&](qreal w) { return w / m_svgRect.width() * targetRect.width(); };
         auto mapH = [&](qreal h) { return h / m_svgRect.height() * targetRect.height(); };
 
-        // 外壳
-        qreal shellPenWidth = mapW(32);
-        QRectF outer(mapX(96) + shellPenWidth / 2, mapY(224) + shellPenWidth / 2,
-                    mapW(832) - shellPenWidth, mapH(576) - shellPenWidth);
-        painter.setPen(QPen(QColor("#111"), shellPenWidth));
-        painter.setBrush(Qt::NoBrush);
-        painter.drawRoundedRect(outer, mapW(80), mapH(80));
-
-        // 正极端子
-        QRectF terminal(mapX(912), mapY(400), mapW(64), mapH(224));
-        painter.setPen(Qt::NoPen);
-        painter.setBrush(QColor("#111"));
-        painter.drawRoundedRect(terminal, mapW(20), mapH(20));
-
-        // 内部背景
-        QRectF inner(mapX(136), mapY(264), mapW(752), mapH(496));
-        painter.setBrush(QColor("#eee"));
-        painter.drawRoundedRect(inner, mapW(56), mapH(56));
-
         // 电量颜色选择
-        QColor chargeColor = QColor("#76c043");
-        if (m_iBatteryPercent == -1) {
-            chargeColor = Qt::gray;
-        } else {
+        QColor chargeColor = QColor("#ff0000");
+        if (m_iBatteryPercent != -1) {
             QList<int> keys = m_configMap.keys();
             std::sort(keys.begin(), keys.end());
             for (int key : keys) {
@@ -153,19 +132,48 @@ void BatteryWgt::paintEvent(QPaintEvent *)
                 }
             }
         }
+        // 外壳
+        qreal shellPenWidth = mapW(32);
+        QRectF outer(mapX(96) + shellPenWidth / 2, mapY(224) + shellPenWidth / 2,
+                    mapW(832) - shellPenWidth, mapH(576) - shellPenWidth);
+        painter.setPen(QPen(chargeColor, shellPenWidth));//外壳与电量一样颜色
+        // painter.setPen(QPen(QColor("#111"), shellPenWidth));
+        painter.setBrush(Qt::NoBrush);
+        painter.drawRoundedRect(outer, mapW(80), mapH(80));
 
-        // 电量条
+        // 正极端子
+        QRectF terminal(mapX(912), mapY(400), mapW(64), mapH(224));
+        painter.setPen(Qt::NoPen);
+        // painter.setBrush(QColor("#111"));
+        painter.setBrush(chargeColor);
+        painter.drawRoundedRect(terminal, mapW(20), mapH(20));
+
+        // 内部背景
+        QRectF inner(mapX(136), mapY(264), mapW(752), mapH(496));
+        // painter.setBrush(QColor("#eee"));
+        // painter.drawRoundedRect(inner, mapW(56), mapH(56));
+
+        // 电量条（整条）
         if (m_iBatteryPercent >= 0) {
-            qreal chargeWidth = mapW(752) * m_iBatteryPercent / 100.0;
+            qreal chargeWidth = inner.width() * m_iBatteryPercent / 100.0;
             QRectF charge(inner.left(), inner.top(), chargeWidth, inner.height());
             painter.setBrush(chargeColor);
             painter.drawRoundedRect(charge, mapW(56), mapH(56));
         }
 
+        // 电量条（分格显示，每格 20%）
+        // int percentItem=20;
+        // if (m_iBatteryPercent >= 0) {
+        //     qreal chargeWidth = mapW(752) * m_iBatteryPercent / 100.0;
+        //     QRectF charge(inner.left(), inner.top(), chargeWidth, inner.height());
+        //     painter.setBrush(chargeColor);
+        //     painter.drawRoundedRect(charge, mapW(56), mapH(56));
+        // }
+  
         // 内部边框
-        painter.setBrush(Qt::NoBrush);
-        painter.setPen(QPen(QColor("#bbb"), mapW(8)));
-        painter.drawRoundedRect(inner, mapW(56), mapH(56));
+        // painter.setBrush(Qt::NoBrush);
+        // painter.setPen(QPen(QColor("#bbb"), mapW(8)));
+        // painter.drawRoundedRect(inner, mapW(56), mapH(56));
 
         // 电量文本
         if (m_needShowText) {

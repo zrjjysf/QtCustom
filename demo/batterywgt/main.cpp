@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     statusBarLayout->addWidget(battery1,1);
     statusBarLayout->addStretch(1);
     QTimer* click=new QTimer;
-    QObject::connect(click,&QTimer::timeout,[battery](){static int per=10;battery->setBatteryPercent(per);per=per>=100?0:per+10;});
+    QObject::connect(click,&QTimer::timeout,[battery](){static int per=0;battery->setBatteryPercent(per);per=per>=100?0:per+5;});
     click->start(1000);
 
     QPushButton *appQSS = new QPushButton("applicationQSS");

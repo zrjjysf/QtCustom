@@ -1,0 +1,31 @@
+QTableView {
+    border: 1px solid rgb(203, 204, 210);
+    gridline-color: rgb(203, 204, 210);
+    alternate-background-color: #dcdde1;
+    selection-background-color: #2980b9;
+}
+QHeaderView::section {
+    background-color: #f5f6fa;
+    padding: 0.5em;
+    border: 1px solid #dcdde1;
+}
+
+/* QTableWidget {
+    background: white;
+}
+
+QTableWidget QTableCornerButton::section {
+    background-color: white;
+}
+QTableWidget::verticalHeader {
+    background-color: white;
+}
+QTableWidget::verticalHeader::section {
+    background-color: white;
+}
+QTableWidget::horizontalHeader {
+    background-color: white;
+}
+QTableWidget::horizontalHeader::section {
+    background-color: white;
+} */

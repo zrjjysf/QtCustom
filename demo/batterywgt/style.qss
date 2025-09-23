@@ -4,19 +4,14 @@ QWidget#statusBar
     font-size:8pt;
     min-height:10em;
     max-height:10em;
-    background-color:blue;
+    /* background-color:blue; */
     padding: 20px;
-}
-QWidget#statusBar *
-{
-    background-color:red;
 }
 
 QFrame
 {
     margin:10px;
     padding:10px;
-    border: 20px solid #007BFF;
     border-radius: 5px;
 }
 
@@ -24,7 +19,7 @@ BatteryWgt {
     qproperty-batteryColorConfig: "20:#ff0000;50:#ffaa00;100:#00ff00";
     margin:10px;
     padding:0px;
-    border: 10px solid;
+    /* border: 10px solid; */
     /* border-radius: 10px; */
 }
 
