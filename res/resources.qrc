@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>style.qss</file>
     </qresource>
+    <qresource prefix="/img">
+        <file>tip_charge.svg</file>
+    </qresource>
 </RCC>
 

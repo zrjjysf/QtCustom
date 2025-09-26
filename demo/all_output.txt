@@ -1,0 +1,291 @@
+==== CMakeLists.txt ====
+set(SOURCES
+    main.cpp
+)
+
+set(HEADERS
+)
+
+# Demo 可执行程序
+add_executable(ThemeSvg ${SOURCES} ${HEADERS})
+
+target_link_libraries(ThemeSvg
+    PRIVATE
+        common
+        themesvg   # ✅ 直接链接库，而不是重复源文件
+)
+
+# 复制 qss/svg 到构建目录
+configure_file(style.qss style.qss COPYONLY)
+configure_file(tip_charge.svg tip_charge.svg COPYONLY)
+
+
+# -------------------------------
+# 封装的 themesvg 库
+# -------------------------------
+set(COMMON_SOURCES
+    themedsvgrenderer.cpp
+    themesvgwgt.cpp
+)
+
+set(COMMON_HEADERS
+    themedsvgrenderer.h
+    themesvgwgt.h
+)
+
+add_library(themesvg STATIC ${COMMON_SOURCES} ${COMMON_HEADERS})
+
+target_link_libraries(themesvg
+    PRIVATE
+        common
+        Qt5::Core
+        Qt5::Gui
+        Qt5::Widgets
+        Qt5::Svg
+)
+
+target_link_libraries(themesvg PUBLIC Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Svg)
+
+target_include_directories(themesvg PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+==== END CMakeLists.txt ====
+==== main.cpp ====
+#include <QApplication>
+#include <QFile>
+#include <QVBoxLayout>
+#include <QWidget>
+#include <QPushButton>
+#include "themesvgwgt.h"
+#include "tool.h"
+#include <QDebug>
+
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+    app.setStyleSheet(getQSS());
+    QWidget window;
+    window.setWindowTitle("ThemeSvg Demo");
+    QFile f(":/img/tip_charge.svg");
+    qDebug() << "exists?" << f.exists();
+
+    QVBoxLayout *layout = new QVBoxLayout(&window);
+
+    ThemeSvgWgt *svg1 = new ThemeSvgWgt;
+    svg1->setMinimumSize(64, 64);
+    layout->addWidget(svg1);
+
+    QPushButton *appQSS = new QPushButton("applicationQSS");
+    layout->addWidget(appQSS);
+    QObject::connect(appQSS, &QPushButton::pressed,[&](){cleanQSS();app.setStyleSheet(getQSS());});
+    window.show();
+    return app.exec();
+}
+==== END main.cpp ====
+==== style.qss ====
+ThemeSvgWgt {
+    color: blue; /* 控件2的前景色 */
+    qproperty-svgPath: url(./tip_charge.svg);
+}
+==== END style.qss ====
+==== themedsvgrenderer.cpp ====
+#include "themedsvgrenderer.h"
+#include <QColor>
+#include <QFile>
+
+ThemedSvgRenderer::ThemedSvgRenderer(QObject *parent) : QSvgRenderer(parent) {}
+
+bool ThemedSvgRenderer::load(const QByteArray &contents, const QPalette &palette)
+{
+    QByteArray modified = preprocessSvg(contents, palette);
+    return QSvgRenderer::load(modified);
+}
+
+bool ThemedSvgRenderer::load(const QString &filename, const QPalette &palette)
+{
+    QFile f(filename);
+    if (!f.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    QByteArray raw = f.readAll();
+    QByteArray modified = preprocessSvg(raw, palette);
+    return QSvgRenderer::load(modified);
+}
+
+QByteArray ThemedSvgRenderer::preprocessSvg(const QByteArray &contents, const QPalette &palette) const
+{
+    QByteArray modified = contents;
+
+    // 默认：替换 currentColor 为调色板 WindowText 颜色
+    if (!palette.isCopyOf(QPalette())) {
+        QColor c = palette.color(QPalette::WindowText);
+        modified.replace("currentColor", c.name(QColor::HexRgb).toUtf8());
+    }
+
+    // 未来可扩展：更多颜色占位符替换
+    // modified.replace("{{primary}}", "#ff0000");
+    // modified.replace("{{secondary}}", "#00ff00");
+
+    return modified;
+}
+==== END themedsvgrenderer.cpp ====
+==== themedsvgrenderer.h ====
+#ifndef THEMEDSVGRENDERER_H
+#define THEMEDSVGRENDERER_H
+
+#include <QPalette>
+#include <QString>
+#include <QSvgRenderer>
+
+/**
+ * @brief ThemedSvgRenderer
+ *
+ * @note 一个支持自动颜色占位符替换的 QSvgRenderer 子类。
+ * 默认会把 SVG 内的 "currentColor" 替换成调色板中的 WindowText 颜色。
+ * 目前仅单色替换后续可扩展支持更多占位符，例如 {{primary}}, {{secondary}}。
+ */
+class ThemedSvgRenderer : public QSvgRenderer {
+    Q_OBJECT
+public:
+    explicit ThemedSvgRenderer(QObject *parent = nullptr);
+
+    /**
+     * @brief load 从字节数据加载 SVG
+     * @param contents 原始 SVG 数据
+     * @param palette  颜色来源调色板（可选）,不使用调色板中的 WindowText 颜色
+     * @return 是否加载成功
+     */
+    bool load(const QByteArray &contents, const QPalette &palette = QPalette());
+
+    /**
+     * @brief load 从文件加载 SVG
+     * @param filename SVG 文件路径
+     * @param palette  颜色来源调色板（可选）,不使用调色板中的 WindowText 颜色
+     * @return 是否加载成功
+     */
+    bool load(const QString &filename, const QPalette &palette = QPalette());
+private:
+    QByteArray preprocessSvg(const QByteArray &contents, const QPalette &palette) const;
+};
+
+#endif   // THEMEDSVGRENDERER_H
+==== END themedsvgrenderer.h ====
+==== themesvgwgt.cpp ====
+#include "themesvgwgt.h"
+#include <QEvent>
+#include <QPainter>
+#include <QStyleOption>
+#include "themedsvgrenderer.h"
+
+ThemeSvgWgt::ThemeSvgWgt(QWidget *parent) : QSvgWidget(parent), m_renderer(new ThemedSvgRenderer(this)) {}
+
+ThemeSvgWgt::ThemeSvgWgt(const QString &file, QWidget *parent)
+    : QSvgWidget(parent), m_path(file), m_renderer(new ThemedSvgRenderer(this))
+{
+    setAttribute(Qt::WA_StyledBackground, true); // 启用样式表背景支持
+    m_renderer->load(file, palette());
+}
+
+void ThemeSvgWgt::setSvgPath(const QString &path)
+{
+    m_path = path;
+    QString realPath = path;
+
+    if (realPath.startsWith("url(") && realPath.endsWith(")"))
+        realPath = realPath.mid(4, realPath.size() - 5);
+
+    m_renderer->load(realPath, palette());
+    update();
+}
+
+void ThemeSvgWgt::reload()
+{
+    if (m_path.isEmpty())
+        return;
+
+    QString realPath = m_path;
+    if (realPath.startsWith("url(") && realPath.endsWith(")"))
+        realPath = realPath.mid(4, realPath.size() - 5);
+
+    m_renderer->load(realPath, palette());
+}
+
+// void ThemeSvgWgt::paintEvent(QPaintEvent *event)
+// {
+//     Q_UNUSED(event)
+//     QPainter p(this);
+//     p.setRenderHint(QPainter::Antialiasing);
+//     m_renderer->render(&p, rect());
+// }
+void ThemeSvgWgt::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event)
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+
+    QSizeF svgSize = m_renderer->defaultSize();
+    if (svgSize.isEmpty()) {
+        m_renderer->render(&p, rect()); // fallback
+        return;
+    }
+
+    QRectF targetRect = rect();
+    qreal scale = qMin(
+        targetRect.width() / svgSize.width(),
+        targetRect.height() / svgSize.height()
+    );
+
+    QSizeF scaledSize = svgSize * scale;
+    QPointF topLeft(
+        targetRect.x() + (targetRect.width() - scaledSize.width()) / 2,
+        targetRect.y() + (targetRect.height() - scaledSize.height()) / 2
+    );
+
+    QRectF renderRect(topLeft, scaledSize);
+    m_renderer->render(&p, renderRect);
+}
+
+void ThemeSvgWgt::changeEvent(QEvent *e)
+{
+    QSvgWidget::changeEvent(e);
+    if (e->type() == QEvent::PaletteChange || e->type() == QEvent::StyleChange) {
+        // 子控件样式/调色板一变，自动按新颜色重载
+        reload();
+    }
+}==== END themesvgwgt.cpp ====
+==== themesvgwgt.h ====
+#ifndef THEMESVGWGT_H
+#define THEMESVGWGT_H
+
+#include <QString>
+#include <QSvgWidget>
+
+class ThemedSvgRenderer;
+class ThemeSvgWgt : public QSvgWidget {
+    Q_OBJECT
+    Q_PROPERTY(QString svgPath READ svgPath WRITE setSvgPath)
+public:
+    explicit ThemeSvgWgt(QWidget *parent = nullptr);
+    explicit ThemeSvgWgt(const QString &file, QWidget *parent = nullptr);
+
+    QString svgPath() const
+    {
+        return m_path;
+    }
+    void setSvgPath(const QString &path);
+
+    // 用当前 palette 重新预处理并加载
+    void reload();
+protected:
+    void paintEvent(QPaintEvent *event) override;
+    void changeEvent(QEvent *e) override;
+private:
+    QString m_path;
+    ThemedSvgRenderer *m_renderer;
+};
+
+#endif   // THEMESVGWGT_H
+==== END themesvgwgt.h ====
+==== tip_charge.svg ====
+<svg t="1756282210430" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2007" width="128" height="128" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor" stroke="currentColor">
+   <path d="M512 393.216 229.376 512 430.08 512 471.04 630.784 753.664 512 552.96 512Z" p-id="2008"></path>
+   <path d="M913.408 430.08l0-81.92c0-45.056-36.864-81.92-81.92-81.92L151.552 266.24c-45.056 0-81.92 36.864-81.92 81.92l0 319.488c0 45.056 36.864 81.92 81.92 81.92l684.032 0c45.056 0 81.92-36.864 81.92-81.92l0-81.92c20.48 0 40.96-16.384 40.96-40.96l0-81.92C954.368 450.56 933.888 430.08 913.408 430.08zM872.448 471.04l0 81.92 0 118.784c0 20.48-16.384 40.96-40.96 40.96L151.552 712.704c-20.48 0-40.96-16.384-40.96-40.96L110.592 352.256c0-20.48 16.384-40.96 40.96-40.96l684.032 0c20.48 0 40.96 16.384 40.96 40.96L876.544 471.04z" p-id="2009"></path>
+</svg>==== END tip_charge.svg ====

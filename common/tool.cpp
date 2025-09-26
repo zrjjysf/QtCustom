@@ -10,6 +10,7 @@
 #include <QStyle>
 #include <QWidget>
 #include <QAbstractScrollArea>
+#include <QLayout>
 
 QString getQSS()
 {
@@ -118,4 +119,10 @@ void cleanQSS()
         qApp->style()->polish(w);
         w->update();
     }
+}
+
+void cleanlayoutDefaultMargins(QLayout* layout)
+{
+    layout->setContentsMargins(0,0,0,0);
+    layout->setSpacing(0);
 }

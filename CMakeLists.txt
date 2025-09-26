@@ -17,6 +17,11 @@ find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets Svg)
 # 公共库
 add_subdirectory(common)
 
+set(RESOURCES
+    resources.qrc
+)
+qt5_add_resources(QRC_SOURCES ${RESOURCES})
+
 # 各控件子项目
 add_subdirectory(demo/batterywgt)
 add_subdirectory(demo/customscrollbar)
@@ -28,3 +33,5 @@ add_subdirectory(demo/customtablewidget)
 add_subdirectory(demo/dynamicui)
 add_subdirectory(demo/levitatewidget)
 add_subdirectory(demo/verticalinfowidget)
+add_subdirectory(demo/themesvg)
+add_subdirectory(demo/iconlabel)

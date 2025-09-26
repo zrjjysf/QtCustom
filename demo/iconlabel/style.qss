@@ -1,0 +1,15 @@
+.IconLabel > .ThemeSvgWgt
+{
+    /* max-height: 2em; */
+    qproperty-svgPath: url(./tip_charge.svg);
+}
+
+.IconLabel > *
+{
+    color: blue;
+}
+
+.IconLabel
+{
+    background-color: red;
+}

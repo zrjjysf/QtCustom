@@ -4,6 +4,7 @@
 #include <QApplication>
 
 class QPalette;
+class QLayout;
 
 void dumpPaletteColors(const QPalette& palette);
 
@@ -19,4 +20,7 @@ QString getQSS();
  * 
  */
 void cleanQSS();
+
+
+void cleanlayoutDefaultMargins(QLayout* layout);
 #endif
