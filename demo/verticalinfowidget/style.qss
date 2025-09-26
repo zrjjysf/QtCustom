@@ -1,0 +1,16 @@
+.VerticalInfoWidget {
+    border: 1px solid gray;
+    padding: 10px;
+    margin: 5px;
+    background-color: blue;
+}
+.VerticalInfoWidget > .QLabel#top{
+    padding: 1em;
+    qproperty-alignment: 'AlignJustify|AlignVCenter';
+    background-color: red;
+}
+.VerticalInfoWidget > .QLabel#bottom{
+    padding: 1em;
+    qproperty-alignment: 'AlignJustify|AlignVCenter';
+    background-color: green;
+}

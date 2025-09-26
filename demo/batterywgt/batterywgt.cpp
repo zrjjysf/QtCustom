@@ -149,7 +149,8 @@ void BatteryWgt::paintEvent(QPaintEvent *)
         painter.drawRoundedRect(terminal, mapW(20), mapH(20));
 
         // 内部背景
-        QRectF inner(mapX(136), mapY(264), mapW(752), mapH(496));
+        // QRectF inner(mapX(136), mapY(264), mapW(752), mapH(496));
+        QRectF inner(mapX(146), mapY(270), mapW(732), mapH(484));
         // painter.setBrush(QColor("#eee"));
         // painter.drawRoundedRect(inner, mapW(56), mapH(56));
 

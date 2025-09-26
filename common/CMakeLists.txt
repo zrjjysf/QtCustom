@@ -1,9 +1,11 @@
 set(COMMON_SOURCES
     tool.cpp
+    ccapplication.cpp
 )
 
 set(COMMON_HEADERS
     tool.h
+    ccapplication.h
 )
 
 add_library(common STATIC ${COMMON_SOURCES} ${COMMON_HEADERS})

@@ -1,6 +1,7 @@
 #ifndef TOOL
 #define TOOL
 #include <QString>
+#include <QApplication>
 
 class QPalette;
 
@@ -18,5 +19,4 @@ QString getQSS();
  * 
  */
 void cleanQSS();
-
 #endif
