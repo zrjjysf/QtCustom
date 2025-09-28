@@ -1,10 +1,11 @@
 {
   "clangd.arguments": [
-    "--compile-commands-dir=.",
+    "--compile-commands-dir=./build",
     "--header-insertion=never",
     "--completion-style=detailed"
   ],
   "C_Cpp.intelliSenseEngine": "disabled", // 禁用微软插件的补全
   "clangd.path": "/usr/bin/clangd",       // 根据你的系统路径调整
-  "clangd.completion.completeBrackets": false
+  "clangd.completion.completeBrackets": false,
+  "qt-ui.customWidgetsDesignerExePath": "/opt/Qt5.14.2/5.14.2/gcc_64/bin/designer"
 }

@@ -2,7 +2,9 @@
 #define VERTICALINFOWIDGET_H
 
 #include <QFrame>
-
+namespace Ui {
+class VerticalInfoWidget;
+}
 class QLabel;
 class VerticalInfoWidget : public QFrame
 {
@@ -15,6 +17,7 @@ public:
 private:
     QLabel *m_topLabel;
     QLabel *m_bottomLabel;
+
 private slots:
     void wrapStyleProxy();
 };

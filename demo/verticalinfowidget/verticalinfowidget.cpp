@@ -7,17 +7,18 @@
 #include <QDebug>
 #include "ccapplication.h"
 #include "justifylabelstyle.h"
+#include "ui_verticalinfowidget.h"
 
 
 VerticalInfoWidget::VerticalInfoWidget(QWidget *parent)
     : QFrame(parent),
       m_topLabel(new QLabel),
       m_bottomLabel(new QLabel)
-{    
+{
     wrapStyleProxy();
     connect(CCApplication::instance(), &CCApplication::freshQSS,this,&VerticalInfoWidget::wrapStyleProxy);
-    m_topLabel->setObjectName("top");
-    m_bottomLabel->setObjectName("bottom");
+    m_topLabel->setObjectName("topLabel");
+    m_bottomLabel->setObjectName("bottomLabel");
     QVBoxLayout *m_layout = new QVBoxLayout(this);
     m_layout->addWidget(m_topLabel);
     m_layout->addWidget(m_bottomLabel);
@@ -38,11 +39,8 @@ void VerticalInfoWidget::setBottomText(const QString &text)
 void VerticalInfoWidget::wrapStyleProxy()
 {
     if (qobject_cast<JustifyLabelStyle*>(this->style())) {
-        qDebug() << "已经是 JustifyLabelStyle，不需要再包装";
     } else {
         QStyle *proxy = new JustifyLabelStyle(this->style());
         this->setStyle(proxy);
-        qDebug() << "包装了JustifyLabelStyle";
     }
-    qDebug()<<"VerticalInfoWidget style"<<this->style()->metaObject()->className();
 }

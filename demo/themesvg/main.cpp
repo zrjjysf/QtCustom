@@ -19,7 +19,6 @@ int main(int argc, char *argv[])
     QVBoxLayout *layout = new QVBoxLayout(&window);
 
     ThemeSvgWgt *svg1 = new ThemeSvgWgt;
-    svg1->setMinimumSize(64, 64);
     layout->addWidget(svg1);
 
     QPushButton *appQSS = new QPushButton("applicationQSS");

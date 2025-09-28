@@ -1,4 +1,7 @@
 ThemeSvgWgt {
     color: blue; /* 控件2的前景色 */
+    font-size: 12px;
+    max-width: 1em;
+    max-height: 1em;
     qproperty-svgPath: url(./tip_charge.svg);
 }

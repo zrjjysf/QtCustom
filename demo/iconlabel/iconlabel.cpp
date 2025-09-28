@@ -8,12 +8,8 @@
 IconLabel::IconLabel(QWidget *parent):m_label(new QLabel),m_icon(new ThemeSvgWgt)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setContentsMargins(0,0,0,0);
-    layout->setSpacing(0);
-
     layout->addWidget(m_icon);
     layout->addWidget(m_label);
-    layout->addStretch(1);
 }
 
 void IconLabel::setText(const QString &text)

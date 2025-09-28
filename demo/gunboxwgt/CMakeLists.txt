@@ -6,11 +6,11 @@ set(HEADERS
 )
 
 # Demo 可执行程序
-add_executable(IconLabel ${SOURCES} ${HEADERS})
+add_executable(GunBox ${SOURCES} ${HEADERS})
 
-target_link_libraries(IconLabel
+target_link_libraries(GunBox
     PRIVATE
-        iconlabel
+        gunboxwgt
 )
 
 # 复制 qss/svg 到构建目录
@@ -21,19 +21,19 @@ configure_file(lightning.svg lightning.svg COPYONLY)
 # 封装的库
 # -------------------------------
 set(COMMON_SOURCES
-    iconlabel.cpp
+    gunboxwgt.cpp
 )
 
 set(COMMON_HEADERS
-    iconlabel.h
+    gunboxwgt.h
 )
 
-add_library(iconlabel SHARED ${COMMON_SOURCES} ${COMMON_HEADERS})
+add_library(gunboxwgt SHARED ${COMMON_SOURCES} ${COMMON_HEADERS})
 
-target_link_libraries(iconlabel
+target_link_libraries(gunboxwgt
     PUBLIC
-        common
-        themesvg
+        iconlabel
+        verticalinfowidget
 )
 
-target_include_directories(iconlabel PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(gunboxwgt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
