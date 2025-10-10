@@ -16,6 +16,7 @@ target_link_libraries(ThemeSvg
 # 复制 qss/svg 到构建目录
 configure_file(style.qss style.qss COPYONLY)
 configure_file(tip_charge.svg tip_charge.svg COPYONLY)
+configure_file(lightning.svg lightning.svg COPYONLY)
 
 
 # -------------------------------

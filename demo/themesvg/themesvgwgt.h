@@ -23,6 +23,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *event) override;
     void changeEvent(QEvent *e) override;
+
 private:
     QString m_path;
     ThemedSvgRenderer *m_renderer;

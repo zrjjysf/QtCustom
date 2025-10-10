@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="220" height="160" viewBox="0 0 220 160" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <!-- 右侧线性渐变（从靠卡片处较深→逐渐透明） -->
+    <linearGradient id="shadowRightGrad" gradientUnits="userSpaceOnUse"
+                    x1="195" x2="215" y1="0" y2="0">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.00"/>
+    </linearGradient>
+
+    <!-- 底部线性渐变（从靠卡片处较深→逐渐透明） -->
+    <linearGradient id="shadowBottomGrad" gradientUnits="userSpaceOnUse"
+                    x1="0" x2="0" y1="145" y2="165">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.00"/>
+    </linearGradient>
+
+    <!-- 右下角径向渐变用于平滑角落衔接 -->
+    <radialGradient id="cornerGrad" gradientUnits="userSpaceOnUse"
+                    cx="195" cy="145" r="24">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.00"/>
+    </radialGradient>
+
+    <!-- 卡片本体轻微渐变 -->
+    <linearGradient id="cardGrad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#fbfbfb"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 阴影（放在卡片下面绘制，使卡片在上面遮盖内部） -->
+  <rect x="195" y="10" width="20" height="130" fill="url(#shadowRightGrad)" />
+  <rect x="10" y="145" width="180" height="15" fill="url(#shadowBottomGrad)" />
+  <circle cx="195" cy="145" r="20" fill="url(#cornerGrad)" />
+
+  <!-- 白色卡片（在阴影之上绘制） -->
+  <rect x="5" y="5" width="190" height="140" rx="12" ry="12"
+        fill="url(#cardGrad)" stroke="#e6e6e6" stroke-width="1"/>
+</svg>
