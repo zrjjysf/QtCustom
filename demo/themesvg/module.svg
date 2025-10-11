@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 200" width="512" height="200">
+  <!-- 上方橙色条（略长） -->
+  <rect x="0" y="0" width="524" height="14" fill="#E97F1A"/>
+
+  <!-- 中间深灰背景（模块主体） -->
+  <rect x="6" y="16" width="500" height="168" fill="#4A5A64"/>
+
+  <!-- 下方橙色条（略长） -->
+  <rect x="0" y="186" width="524" height="14" fill="#E97F1A"/>
+</svg>

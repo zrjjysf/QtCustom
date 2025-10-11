@@ -15,12 +15,16 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override;
+
 private slots:
-    void toggleSidebar();
+    void expandSidebar();
     void changePage(int index);
 
 private:
     QWidget *sidebar = nullptr;
+    QPushButton *expandButton = nullptr;
     QStackedWidget *stack = nullptr;
     bool isCollapsed = true;
 
