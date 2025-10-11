@@ -2,58 +2,98 @@
 #include <QPainter>
 #include <QFontMetrics>
 
+const int margin = 10;
+const int leftRectWidth = 40;
+const int rightRectWidth = 120;
+const int rectHeight = 40;
+
 BatteryCellWidget::BatteryCellWidget(QWidget *parent)
     : QWidget(parent), m_number(0)
 {
-    setMinimumSize(20, 26);
+    setMinimumSize(18, 10);
 }
 
 void BatteryCellWidget::setNumber(int number)
 {
     m_number = number;
-    update(); // 触发重绘
+    update();
 }
 
-void BatteryCellWidget::setCenterText(const QString &text)
+void BatteryCellWidget::setVoltage(double voltage)
 {
-    m_centerText = text;
-    update(); // 触发重绘
+    m_voltage = voltage;
+    update();
 }
 
-void BatteryCellWidget::paintEvent(QPaintEvent * /*event*/)
+void BatteryCellWidget::setVoltageThresholds(double low, double high)
+{
+    m_lowVoltage = low;
+    m_highVoltage = high;
+    update();
+}
+
+void BatteryCellWidget::setHighlighted(bool highlight)
+{
+    m_highlighted = highlight;
+    update();
+}
+
+// ---------------- paintEvent ----------------
+void BatteryCellWidget::paintEvent(QPaintEvent* /*event*/)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    // 缩放比例，保持SVG比例适应控件大小
-    const double scaleX = width() / 200.0;
-    const double scaleY = height() / 260.0;
+    const double scaleX = width() / (margin*2 + leftRectWidth + rightRectWidth);
+    const double scaleY = height() / (rectHeight + margin*2);
     painter.scale(scaleX, scaleY);
 
-    // 绘制顶部深棕色盖子
-    QRectF topRect(30, 20, 140, 25);
+    // ---------------- 左侧深棕色盖子 ----------------
+    QRectF leftRect(margin, margin, leftRectWidth, rectHeight);
     painter.setBrush(QColor("#2E1E10"));
     painter.setPen(Qt::NoPen);
-    painter.drawRect(topRect);
+    painter.drawRect(leftRect);
 
-    // 绘制主体橙色部分
-    QRectF bodyRect(30, 45, 140, 195);
-    painter.setBrush(QColor("#F7931A"));
+    // ---------------- 右侧主体颜色 ----------------
+    QRectF bodyRect(margin + leftRectWidth, margin, rightRectWidth, rectHeight);
+    QColor bodyColor = QColor("#388E3C"); // 默认绿色
+    if (m_lowVoltage < m_highVoltage) {
+        if (m_voltage < m_lowVoltage) bodyColor = QColor("#D32F2F");      // 红色
+        else if (m_voltage > m_highVoltage) bodyColor = QColor("#4CAF50"); // 绿色
+    }
+    painter.setBrush(bodyColor);
     painter.drawRect(bodyRect);
 
-    // 绘制编号（靠左）
     painter.setPen(Qt::white);
-    QFont numberFont = painter.font();
-    numberFont.setBold(true);
-    numberFont.setPointSize(12);
-    painter.setFont(numberFont);
 
-    QString numberText = QString::number(m_number);
-    painter.drawText(QRectF(30, 20, 140, 25), Qt::AlignLeft | Qt::AlignVCenter, numberText);
+    // ---------------- 编号 ----------------
+    {
+        QString numberText = QString::number(m_number);
+        QFont numberFont = painter.font();
+        numberFont.setBold(true);
+        numberFont.setPointSize(rectHeight / 3);
+        painter.setFont(numberFont);
+        painter.drawText(leftRect, Qt::AlignCenter, numberText);
+    }
 
-    // 绘制中间文本
-    QFont centerFont = painter.font();
-    centerFont.setPointSize(16);
-    painter.setFont(centerFont);
-    painter.drawText(bodyRect, Qt::AlignCenter, m_centerText);
+    // ---------------- 电压文本 ----------------
+    {
+        QString voltageText = QString::number(m_voltage, 'f', 1) + "V";
+        QFont voltageFont = painter.font();
+        voltageFont.setBold(true);
+        voltageFont.setPointSize(rectHeight / 3);
+        painter.setFont(voltageFont);
+        painter.drawText(bodyRect, Qt::AlignCenter, voltageText);
+    }
+
+    // ---------------- 高亮边框 ----------------
+    if (m_highlighted) {
+        QPen pen(QColor("#FFD700")); // 黄色
+        pen.setWidth(3);             // 粗边框
+        painter.setPen(pen);
+        painter.setBrush(Qt::NoBrush);
+        painter.drawRect(margin/2, margin/2,
+                         leftRectWidth + rightRectWidth + margin,
+                         rectHeight + margin);
+    }
 }

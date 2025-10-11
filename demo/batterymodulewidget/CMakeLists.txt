@@ -33,6 +33,7 @@ add_library(batterymodulewidget SHARED ${COMMON_SOURCES} ${COMMON_HEADERS})
 target_link_libraries(batterymodulewidget
     PUBLIC
         batterycellwidget
+        customscrollbar
 )
 
 target_include_directories(batterymodulewidget PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

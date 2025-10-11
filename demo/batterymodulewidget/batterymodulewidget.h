@@ -1,11 +1,12 @@
 #ifndef BATTERYMODULEWIDGET_H
 #define BATTERYMODULEWIDGET_H
 
-#include <QAbstractScrollArea>
+#include <QScrollArea>
 #include <QVector>
 #include "batterycellwidget.h"
 
-class BatteryModuleWidget : public QAbstractScrollArea
+//有个低压阈值，有个最低最高值
+class BatteryModuleWidget : public QScrollArea
 {
     Q_OBJECT
 public:
@@ -17,14 +18,18 @@ public:
     // 清空所有电芯
     void clearCells();
 
+    // 设置模块编号
+    void setNumber(int num);
+
 protected:
-    void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
 private:
+    class ContentWidget;             // 前向声明
+    ContentWidget* m_contentWidget;  // 承载所有电芯的容器
+
     QVector<BatteryCellWidget*> m_cells;
-    QWidget* m_contentWidget;    // 承载所有电芯的容器
-    void updateLayout();          // 布局电芯
+    void updateLayout();             // 布局电芯
 };
 
 #endif // BATTERYMODULEWIDGET_H
