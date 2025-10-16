@@ -35,6 +35,7 @@ target_link_libraries(bmscellvoltagewgt
     PUBLIC
         batterypackwidget
         batterymodulewidget
+        flowlayout
 )
 
 target_include_directories(bmscellvoltagewgt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

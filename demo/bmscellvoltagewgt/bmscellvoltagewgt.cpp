@@ -4,6 +4,7 @@
 // #include "gui/component/batterypackwidget.h"
 #include "batterypackwidget.h"
 #include "batterymodulewidget.h"
+#include "flowlayout.h"
 #include "absbmsstruct.h"
 #include <QScrollArea>
 #include <QVBoxLayout>
@@ -20,22 +21,21 @@ BMSCellVoltageWgt::BMSCellVoltageWgt(QWidget *parent)
       m_mainLayout(new QHBoxLayout(this)),
       m_scrollArea(new QScrollArea(this)),
       m_scrollContent(new QWidget),
-      m_leftLayout(new QVBoxLayout(m_scrollContent)),
+      m_leftLayout(new FlowLayout(m_scrollContent)),
       m_stackLayout(new QStackedLayout)
 {
     m_mainLayout->setContentsMargins(0,0,0,0);
     m_mainLayout->setSpacing(0);
     
     m_scrollArea->setWidgetResizable(true);
-    m_scrollArea->setFixedWidth(BatteryPackWidget::staticSize.width()+margin*2);
+    // m_scrollArea->setFixedWidth(BatteryPackWidget::staticSize.width()+margin*2);
     m_scrollArea->setWidget(m_scrollContent);
-    QVBoxLayout* scrollContentLayout = new QVBoxLayout(m_scrollContent);
-    scrollContentLayout->addLayout(m_leftLayout);
-    scrollContentLayout->addStretch(1);
+    m_scrollContent->setLayout(m_leftLayout);
     m_mainLayout->addWidget(m_scrollArea);
     QWidget *stackContainer = new QWidget;
     stackContainer->setLayout(m_stackLayout);
     m_mainLayout->addWidget(stackContainer, 1);
+    stackContainer->setVisible(false);
     initMyConnect();
 
     m_refreshTimer->setInterval(1000);

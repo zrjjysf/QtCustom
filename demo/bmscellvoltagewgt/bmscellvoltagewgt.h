@@ -12,6 +12,7 @@ class QScrollArea;
 class QStackedLayout;
 class BatteryPackWidget;
 class BatteryModuleWidget;
+class FlowLayout;
 
 class BMSCellVoltageWgt : public QWidget {
     Q_OBJECT
@@ -25,7 +26,7 @@ private:
     QTimer *m_refreshTimer;
 
     QHBoxLayout *m_mainLayout;
-    QVBoxLayout *m_leftLayout;
+    FlowLayout *m_leftLayout;
     QScrollArea *m_scrollArea;
     QWidget *m_scrollContent;
 
