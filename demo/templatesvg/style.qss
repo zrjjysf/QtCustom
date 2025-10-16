@@ -1,0 +1,8 @@
+TemplateSvgWidget[status="open"] {
+    qproperty-svgPath: url(./package_open.svg);
+    color: red;
+}
+TemplateSvgWidget[status="close"] {
+    qproperty-svgPath: url(./package.svg);
+    color: #f49c39;
+}

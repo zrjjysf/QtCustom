@@ -3,54 +3,42 @@
 
 #include <QWidget>
 #include <QLabel>
-#include "themesvgwgt.h"
-
+class TemplateSvgWidget;
 class BatteryPackWidget : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(bool isOn READ isOn WRITE setSwitchState NOTIFY switchStateChanged)
-    Q_PROPERTY(bool isAlarm READ isAlarm WRITE setStatus NOTIFY statusChanged)
-    Q_PROPERTY(int packId READ packId WRITE setId NOTIFY idChanged)
-
 public:
+    enum OpenMode
+    {
+        OPEN,
+        CLOSE
+    };
+    Q_ENUM(OpenMode)
+    enum Status
+    {
+        NORMAL,
+        ALARM
+    };
     explicit BatteryPackWidget(QWidget *parent = nullptr);
+    int packID(){return m_packID;}
+    OpenMode openMode(){return m_openMode;}
+    Status status(){return m_status;}
 
-    // 属性读取
-    bool isOn() const { return m_isOn; }
-    bool isAlarm() const { return m_isAlarm; }
-    int packId() const { return m_packId; }
-
-    QSize sizeHint() const override;
-
-    // bool hasHeightForWidth() const override {return true;}
-    // int heightForWidth(int) const override;
-public slots:
-    // 设置状态：正常状态或告警状态
-    void setStatus(bool isAlarm);
-    
-    // 设置开关状态
-    void setSwitchState(bool isOn);
-    
-    // 设置电池包ID
-    void setId(int packId);
-
+    void setPackID(int packID);
+    void setOpenMode(OpenMode mode);
+    void setStatus(Status sta);
+    static QSize staticSize;
 signals:
-    void switchStateChanged(bool isOn);
-    void statusChanged(bool isAlarm);
-    void idChanged(int packId);
+    void opened(int packID);
 
 protected:
-    // void resizeEvent(QResizeEvent *event) override;
-    void updateAppearance();
+    void mousePressEvent(QMouseEvent *event) override;
 
 private:
-    bool m_isOn;
-    bool m_isAlarm;
-    int m_packId;
-    
-    ThemeSvgWgt *m_closedSvg;
-    ThemeSvgWgt *m_openSvg;
-    QLabel *m_idLabel;
+    OpenMode m_openMode = OpenMode::CLOSE;
+    Status m_status = Status::NORMAL;
+    int m_packID = -1;
+    TemplateSvgWidget *m_bg;
 };
 
 #endif // BATTERYPACKWIDGET_H
