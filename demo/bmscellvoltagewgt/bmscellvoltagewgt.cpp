@@ -108,4 +108,6 @@ void BMSCellVoltageWgt::handleSwitch(int packID)
             packs_it.value()->setOpenMode(BatteryPackWidget::CLOSE);
         packs_it++;
     }
+
+    if(m_)
 }
