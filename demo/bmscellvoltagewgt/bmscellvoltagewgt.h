@@ -22,6 +22,7 @@ public:
 
 private:
     void initMyConnect();
+    void handleSwitch(int id);
 
     QTimer *m_refreshTimer;
 
@@ -34,9 +35,8 @@ private:
 
     QMap<int, BatteryPackWidget*> m_packWidgets;
     QMap<int, BatteryModuleWidget*> m_moduleWidgets;
-
-    void handleSwitch(int id);
-    int currentID = -1;
+    QWidget* m_stackContainer;
+    int m_currentID = -1;
 };
 
 #endif // BMSCELLVOLTAGEWGT_H

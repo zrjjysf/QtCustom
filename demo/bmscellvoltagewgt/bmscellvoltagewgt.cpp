@@ -13,7 +13,7 @@
 #include <QTimer>
 #include <QDebug>
 
-const int margin = 10;
+const int margin = 18;
 
 BMSCellVoltageWgt::BMSCellVoltageWgt(QWidget *parent)
     : QWidget(parent),
@@ -21,8 +21,9 @@ BMSCellVoltageWgt::BMSCellVoltageWgt(QWidget *parent)
       m_mainLayout(new QHBoxLayout(this)),
       m_scrollArea(new QScrollArea(this)),
       m_scrollContent(new QWidget),
-      m_leftLayout(new FlowLayout(m_scrollContent)),
-      m_stackLayout(new QStackedLayout)
+      m_leftLayout(new FlowLayout),
+      m_stackLayout(new QStackedLayout),
+      m_stackContainer(new QWidget)
 {
     m_mainLayout->setContentsMargins(0,0,0,0);
     m_mainLayout->setSpacing(0);
@@ -32,10 +33,9 @@ BMSCellVoltageWgt::BMSCellVoltageWgt(QWidget *parent)
     m_scrollArea->setWidget(m_scrollContent);
     m_scrollContent->setLayout(m_leftLayout);
     m_mainLayout->addWidget(m_scrollArea);
-    QWidget *stackContainer = new QWidget;
-    stackContainer->setLayout(m_stackLayout);
-    m_mainLayout->addWidget(stackContainer, 1);
-    stackContainer->setVisible(false);
+    m_stackContainer->setLayout(m_stackLayout);
+    m_mainLayout->addWidget(m_stackContainer, 1);
+    m_stackContainer->setVisible(false);
     initMyConnect();
 
     m_refreshTimer->setInterval(1000);
@@ -51,12 +51,11 @@ void BMSCellVoltageWgt::initMyConnect()
 void BMSCellVoltageWgt::updateData()
 {
     ABSBatteryClusterInfo data;
-    for(float vol=1.0;vol<60.0;++vol)
-        data.addCellVoltage(1,4,int(vol),vol);
-    for(float vol=1.0;vol<100.0;++vol)
-        data.addCellVoltage(1,2,int(vol),vol);
-    for(float vol=1.0;vol<100.0;++vol)
-        data.addCellVoltage(1,3,int(vol),vol);
+    for(int i=0;i<12;++i)
+    {
+        for(float vol=0.0;vol<10.0*i;++vol)
+            data.addCellVoltage(1,i,int(vol),vol);
+    }
 
     if (data.racks.empty())
         return;
@@ -100,6 +99,12 @@ void BMSCellVoltageWgt::handleSwitch(int packID)
 {
     if (!m_moduleWidgets.contains(packID))
         return;
+    if(m_currentID==-1)
+    {
+        m_scrollArea->setFixedWidth(BatteryPackWidget::staticSize.width()+margin*2);
+        m_stackContainer->setVisible(true);
+    }
+    m_currentID = packID;
     m_stackLayout->setCurrentWidget(m_moduleWidgets[packID]);
     auto packs_it = m_packWidgets.constBegin();
     while(packs_it!=m_packWidgets.constEnd())
@@ -108,6 +113,4 @@ void BMSCellVoltageWgt::handleSwitch(int packID)
             packs_it.value()->setOpenMode(BatteryPackWidget::CLOSE);
         packs_it++;
     }
-
-    if(m_)
 }
