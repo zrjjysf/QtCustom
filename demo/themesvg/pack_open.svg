@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 256" width="256" height="128">
+  <!-- 主体 -->
+  <rect x="40" y="80" width="432" height="140" rx="16" ry="16" fill="#F49C39" stroke="#7A4A23" stroke-width="4"/>
+  
+  <!-- 打开的上盖（稍微倾斜一点，用polygon表示掀开状态） -->
+  <polygon points="40,80 472,80 442,40 70,40" fill="#E07B24" stroke="#7A4A23" stroke-width="3"/>
+  
+  <!-- 把手 -->
+  <rect x="180" y="30" width="152" height="20" rx="8" ry="8" fill="#7A4A23"/>
+  
+  <!-- 右上端子 -->
+  <rect x="420" y="35" width="20" height="20" rx="4" ry="4" fill="#F49C39" stroke="#7A4A23" stroke-width="3"/>
+  
+  <!-- 内部电芯示意 -->
+  <rect x="90" y="105" width="60" height="90" rx="4" ry="4" fill="#FFF3C4" stroke="#C19A2C" stroke-width="2"/>
+  <rect x="170" y="105" width="60" height="90" rx="4" ry="4" fill="#FFF3C4" stroke="#C19A2C" stroke-width="2"/>
+  <rect x="250" y="105" width="60" height="90" rx="4" ry="4" fill="#FFF3C4" stroke="#C19A2C" stroke-width="2"/>
+  <rect x="330" y="105" width="60" height="90" rx="4" ry="4" fill="#FFF3C4" stroke="#C19A2C" stroke-width="2"/>
+  
+  <!-- 文字 -->
+  <text x="50%" y="230" text-anchor="middle" font-size="42" font-family="Arial, sans-serif" fill="#7A4A23" font-weight="bold">
+    Pack1
+  </text>
+</svg>

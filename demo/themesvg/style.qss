@@ -1,12 +1,8 @@
-QWidget > ThemeSvgWgt {
-    color: blue; /* 控件2的前景色 */
-    font-size: 12px;
-    max-width: 1em;
-    max-height: 1em;
+ThemeSvgWgt[status="open"] {
+    qproperty-svgPath: url(./package_open.svg);
+    color: red;
 }
-QWidget[status="Fault"] > ThemeSvgWgt {
-    qproperty-svgPath: url(./tip_charge.svg);
-}
-QWidget[status="Charge"] > ThemeSvgWgt {
-    qproperty-svgPath: url(./lightning.svg);
+ThemeSvgWgt[status="close"] {
+    qproperty-svgPath: url(./package.svg);
+    color: #f49c39;
 }

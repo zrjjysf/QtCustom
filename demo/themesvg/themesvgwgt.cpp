@@ -37,40 +37,40 @@ void ThemeSvgWgt::reload()
     m_renderer->load(realPath, palette());
 }
 
-void ThemeSvgWgt::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event)
-    QPainter p(this);
-    p.setRenderHint(QPainter::Antialiasing);
-    m_renderer->render(&p, rect());
-}
 // void ThemeSvgWgt::paintEvent(QPaintEvent *event)
 // {
 //     Q_UNUSED(event)
 //     QPainter p(this);
 //     p.setRenderHint(QPainter::Antialiasing);
-
-//     QSizeF svgSize = m_renderer->defaultSize();
-//     if (svgSize.isEmpty()) {
-//         m_renderer->render(&p, rect()); // fallback
-//         return;
-//     }
-
-//     QRectF targetRect = rect();
-//     qreal scale = qMin(
-//         targetRect.width() / svgSize.width(),
-//         targetRect.height() / svgSize.height()
-//     );
-
-//     QSizeF scaledSize = svgSize * scale;
-//     QPointF topLeft(
-//         targetRect.x() + (targetRect.width() - scaledSize.width()) / 2,
-//         targetRect.y() + (targetRect.height() - scaledSize.height()) / 2
-//     );
-
-//     QRectF renderRect(topLeft, scaledSize);
-//     m_renderer->render(&p, renderRect);
+//     m_renderer->render(&p, rect());
 // }
+void ThemeSvgWgt::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event)
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+
+    QSizeF svgSize = m_renderer->defaultSize();
+    if (svgSize.isEmpty()) {
+        m_renderer->render(&p, rect()); // fallback
+        return;
+    }
+
+    QRectF targetRect = rect();
+    qreal scale = qMin(
+        targetRect.width() / svgSize.width(),
+        targetRect.height() / svgSize.height()
+    );
+
+    QSizeF scaledSize = svgSize * scale;
+    QPointF topLeft(
+        targetRect.x() + (targetRect.width() - scaledSize.width()) / 2,
+        targetRect.y() + (targetRect.height() - scaledSize.height()) / 2
+    );
+
+    QRectF renderRect(topLeft, scaledSize);
+    m_renderer->render(&p, renderRect);
+}
 
 void ThemeSvgWgt::changeEvent(QEvent *e)
 {

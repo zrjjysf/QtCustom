@@ -14,23 +14,27 @@ int main(int argc, char *argv[])
     app.setStyleSheet(getQSS());
     QWidget* window = new QWidget;
     window->setWindowTitle("ThemeSvg Demo");
+    QFile f(":/img/tip_charge.svg");
+    qDebug() << "exists?" << f.exists();
 
     QVBoxLayout *layout = new QVBoxLayout(window);
 
     ThemeSvgWgt *svg1 = new ThemeSvgWgt;
-    svg1->setProperty("status","close");
     layout->addWidget(svg1);
 
     QPushButton *changeStatus = new QPushButton("changeStatus");
-    QObject::connect(changeStatus, &QPushButton::clicked,[&](){
-        QVariant current = svg1->property("status");
+    QObject::connect(changeStatus, &QPushButton::pressed,[&](){
+        QVariant current = window->property("status");
         qDebug()<<current;
         QString nextStatus;
-        nextStatus = current.toString()=="close"?"open":"close";
-        svg1->setProperty("status", nextStatus);
-        svg1->style()->unpolish(svg1);
-        svg1->style()->polish(svg1);
-        svg1->update();
+        nextStatus = current.toString()=="Fault"?"Charge":"Fault";
+        window->setProperty("status", nextStatus);
+
+        for (auto child : window->findChildren<ThemeSvgWgt*>()) {
+            child->style()->unpolish(child);
+            child->style()->polish(child);
+            child->update();
+        }
     });
     layout->addWidget(changeStatus);
 

@@ -21,6 +21,10 @@ public:
     // 设置是否高亮显示
     void setHighlighted(bool highlight);
 
+    static int margin;
+    static int leftRectWidth;
+    static int rightRectWidth;
+    static int rectHeight;
 protected:
     void paintEvent(QPaintEvent *event) override;
 

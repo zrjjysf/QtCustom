@@ -2,10 +2,10 @@
 #include <QPainter>
 #include <QFontMetrics>
 
-const int margin = 10;
-const int leftRectWidth = 40;
-const int rightRectWidth = 120;
-const int rectHeight = 40;
+int BatteryCellWidget::margin = 6;
+int BatteryCellWidget::leftRectWidth = 34;
+int BatteryCellWidget::rightRectWidth = 100;
+int BatteryCellWidget::rectHeight = 34;
 
 BatteryCellWidget::BatteryCellWidget(QWidget *parent)
     : QWidget(parent), m_number(0)
@@ -78,7 +78,7 @@ void BatteryCellWidget::paintEvent(QPaintEvent* /*event*/)
 
     // ---------------- 电压文本 ----------------
     {
-        QString voltageText = QString::number(m_voltage, 'f', 1) + "V";
+        QString voltageText = QString::number(m_voltage, 'f', 3) + "V";
         QFont voltageFont = painter.font();
         voltageFont.setBold(true);
         voltageFont.setPointSize(rectHeight / 3);

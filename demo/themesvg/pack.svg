@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 256" width="256" height="128">
+  <!-- 主体 -->
+  <rect x="40" y="80" width="432" height="140" rx="16" ry="16" fill="#F49C39" stroke="#7A4A23" stroke-width="4"/>
+  <!-- 上盖 -->
+  <rect x="40" y="50" width="432" height="40" rx="10" ry="10" fill="#E07B24" stroke="#7A4A23" stroke-width="3"/>
+  <!-- 把手 -->
+  <rect x="180" y="25" width="152" height="25" rx="8" ry="8" fill="#7A4A23"/>
+  <!-- 右上端子 -->
+  <rect x="420" y="45" width="20" height="25" rx="4" ry="4" fill="#F49C39" stroke="#7A4A23" stroke-width="3"/>
+  <!-- 文字 -->
+  <text x="50%" y="165" text-anchor="middle" font-size="48" font-family="Arial, sans-serif" fill="white" font-weight="bold">
+    Pack
+  </text>
+</svg>
