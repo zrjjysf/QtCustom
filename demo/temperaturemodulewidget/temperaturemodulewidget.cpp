@@ -63,8 +63,6 @@ private:
 // -------------------- TemperatureModuleWidget 实现 --------------------
 TemperatureModuleWidget::TemperatureModuleWidget(QWidget *parent)
     : QScrollArea(parent), 
-      m_lowTemperatureThreshold(0.0),
-      m_highTemperatureThreshold(100.0),
       m_maxTemperature(0.0),
       m_minTemperature(0.0),
       m_maxTemperatureProbeIndex(-1),
@@ -127,11 +125,21 @@ void TemperatureModuleWidget::updateProbeData(const QVector<int>& temperatures) 
         }
     }
     
+    Status currentStatus = Status::NORMAL;
     // 更新所有探头的温度数据
     for (int i = 0; i < temperatures.size(); ++i) {
         if (i < m_probes.size()) {
             m_probes[i]->setTemperature(temperatures[i]);
+            if(m_probes[i]->currentStatus() != TemperatureProbeWidget::Status::NORMAL)
+            {
+                currentStatus = Status::ALARM;
+            }
         }
+    }
+    if(m_currentStatus!=currentStatus)
+    {
+        m_currentStatus = currentStatus;
+        emit statusChanged(m_currentStatus);
     }
     
     // 计算最高最低温度并高亮对应探头

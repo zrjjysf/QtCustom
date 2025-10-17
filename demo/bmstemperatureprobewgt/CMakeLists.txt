@@ -6,11 +6,11 @@ set(HEADERS
 )
 
 # Demo 可执行程序
-add_executable(BMSCellVoltageWgt ${SOURCES} ${HEADERS})
+add_executable(BMSTemperatureProbeWgt ${SOURCES} ${HEADERS})
 
-target_link_libraries(BMSCellVoltageWgt
+target_link_libraries(BMSTemperatureProbeWgt
     PRIVATE
-        bmscellvoltagewgt
+        bmstemperatureprobewgt
 )
 
 # 复制 qss/svg 到构建目录
@@ -22,21 +22,21 @@ configure_file(package_open.svg package_open.svg COPYONLY)
 # 封装的库
 # -------------------------------
 set(COMMON_SOURCES
-    bmscellvoltagewgt.cpp
+    bmstemperatureprobewgt.cpp
 )
 
 set(COMMON_HEADERS
-    bmscellvoltagewgt.h
+    bmstemperatureprobewgt.h
 )
 
-add_library(bmscellvoltagewgt SHARED ${COMMON_SOURCES} ${COMMON_HEADERS})
+add_library(bmstemperatureprobewgt SHARED ${COMMON_SOURCES} ${COMMON_HEADERS})
 
-target_link_libraries(bmscellvoltagewgt
+target_link_libraries(bmstemperatureprobewgt
     PUBLIC
         batterypackwidget
-        batterymodulewidget
         flowlayout
         customscrollbar
+        temperaturemodulewidget
 )
 
-target_include_directories(bmscellvoltagewgt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(bmstemperatureprobewgt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

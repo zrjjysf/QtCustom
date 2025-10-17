@@ -19,6 +19,7 @@ public:
         NORMAL,
         ALARM
     };
+    Q_ENUM(Status)
     explicit BatteryPackWidget(QWidget *parent = nullptr);
     int packID(){return m_packID;}
     OpenMode openMode(){return m_openMode;}
@@ -28,6 +29,8 @@ public:
     void setOpenMode(OpenMode mode);
     void setStatus(Status sta);
     static QSize staticSize;
+public slots:
+    void slotStatusChanged(int status);
 signals:
     void opened(int packID);
 

@@ -27,7 +27,7 @@ BatteryPackWidget::BatteryPackWidget(QWidget *parent)
         }
         )");
     setOpenMode(OpenMode::CLOSE);
-    setStatus(Status::ALARM);
+    setStatus(Status::NORMAL);
 }
 
 void BatteryPackWidget::setPackID(int packID) 
@@ -64,4 +64,12 @@ void BatteryPackWidget::mousePressEvent(QMouseEvent *event)
         setOpenMode(OPEN);
         emit opened(m_packID);
     }
+}
+
+void BatteryPackWidget::slotStatusChanged(int status)
+{
+    QMetaEnum metaEnum = QMetaEnum::fromType<Status>();
+    if(metaEnum.valueToKey(status) == nullptr)
+        return;
+    setStatus(static_cast<Status>(status));
 }

@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QScrollBar>
 #include <limits> // 用于数值极限
+#include <QDebug>
 
 // -------------------- ContentWidget 实现 --------------------
 class BatteryModuleWidget::ContentWidget : public QWidget {
@@ -63,8 +64,6 @@ private:
 // -------------------- BatteryModuleWidget 实现 --------------------
 BatteryModuleWidget::BatteryModuleWidget(QWidget *parent)
     : QScrollArea(parent), 
-      m_lowVoltageThreshold(2.8f),
-      m_highVoltageThreshold(4.2f),
       m_maxVoltage(0.0f),
       m_minVoltage(0.0f),
       m_maxVoltageCellIndex(-1),
@@ -75,6 +74,11 @@ BatteryModuleWidget::BatteryModuleWidget(QWidget *parent)
 
   // 使用 CustomScrollBar
   CustomScrollBar *vScroll = new CustomScrollBar(Qt::Vertical, this);
+  vScroll->setStyleSheet(R"(CustomScrollBar
+    {
+        min-width:25px; 
+        min-height:25px; 
+    })");
   setVerticalScrollBar(vScroll);
   setViewportMargins(0, 0, 0, 0);
 }
@@ -127,11 +131,21 @@ void BatteryModuleWidget::updateCellData(const QVector<float>& voltages) {
         }
     }
     
-    // 更新所有电芯的电压数据
+    // 更新所有电芯的电压数据,顺便判断状态
+    Status currentStatus = Status::NORMAL;
     for (int i = 0; i < voltages.size(); ++i) {
         if (i < m_cells.size()) {
             m_cells[i]->setVoltage(voltages[i]);
+            if(m_cells[i]->currentStatus() != BatteryCellWidget::Status::NORMAL)
+            {
+                currentStatus = Status::ALARM;
+            }
         }
+    }
+    if(m_currentStatus!=currentStatus)
+    {
+        m_currentStatus = currentStatus;
+        emit statusChanged(m_currentStatus);
     }
     
     // 计算最高最低电压并高亮对应电芯

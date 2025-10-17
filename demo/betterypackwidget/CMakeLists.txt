@@ -34,6 +34,7 @@ add_library(batterypackwidget SHARED ${COMMON_SOURCES} ${COMMON_HEADERS})
 target_link_libraries(batterypackwidget
     PUBLIC
         templatesvg
+        
 )
 
 target_include_directories(batterypackwidget PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

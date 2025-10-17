@@ -56,13 +56,14 @@
 Window::Window()
 {
     FlowLayout *flowLayout = new FlowLayout;
-
-    flowLayout->addWidget(new QPushButton(tr("Short")));
-    flowLayout->addWidget(new QPushButton(tr("Longer")));
-    flowLayout->addWidget(new QPushButton(tr("Different text")));
-    flowLayout->addWidget(new QPushButton(tr("More text")));
-    flowLayout->addWidget(new QPushButton(tr("Even longer button text")));
     setLayout(flowLayout);
+    flowLayout->insertWidget(0, new QPushButton(tr("test insert")));
+    flowLayout->insertWidget(0, new QPushButton(tr("test insert1")));
+    // flowLayout->addWidget(new QPushButton(tr("Short")));
+    // flowLayout->addWidget(new QPushButton(tr("Longer")));
+    // flowLayout->addWidget(new QPushButton(tr("Different text")));
+    // flowLayout->addWidget(new QPushButton(tr("More text")));
+    // flowLayout->addWidget(new QPushButton(tr("Even longer button text")));
 
     setWindowTitle(tr("Flow Layout"));
 }

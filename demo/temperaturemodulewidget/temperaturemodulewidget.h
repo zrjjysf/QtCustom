@@ -9,6 +9,12 @@ class TemperatureModuleWidget : public QScrollArea
 {
     Q_OBJECT
 public:
+    enum Status
+    {
+        NORMAL,
+        ALARM    
+    };
+
     explicit TemperatureModuleWidget(QWidget *parent = nullptr);
 
     // 添加一个温度探头
@@ -35,19 +41,22 @@ public:
     // 获取最高温度和最低温度对应的探头索引
     int getMaxTemperatureProbeIndex() const { return m_maxTemperatureProbeIndex; }
     int getMinTemperatureProbeIndex() const { return m_minTemperatureProbeIndex; }
+signals:
+    void statusChanged(int status);
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
 
 private:
     class ContentWidget;             // 前向声明
+    Status m_currentStatus = Status::NORMAL;
     ContentWidget* m_contentWidget;  // 承载所有探头的容器
 
     QVector<TemperatureProbeWidget*> m_probes;
     void updateLayout();             // 布局探头
     
-    int m_lowTemperatureThreshold;     // 低温阈值
-    int m_highTemperatureThreshold;    // 高温阈值
+    int m_lowTemperatureThreshold = 0;     // 低温阈值
+    int m_highTemperatureThreshold = 0;    // 高温阈值
     
     // 新增：最高最低温度相关变量
     int m_maxTemperature;              // 当前最高温度

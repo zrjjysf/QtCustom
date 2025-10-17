@@ -23,6 +23,22 @@ void TemperatureProbeWidget::setNumber(int number)
 void TemperatureProbeWidget::setTemperature(int temperature)
 {
     m_temperature = temperature;
+    if(m_lowTemperature<m_highTemperature)//阈值正常
+    {
+        if(m_temperature<=m_lowTemperature)
+        {
+            m_status = Status::TOO_LOW;
+        }
+        else if (m_temperature>=m_highTemperature) {
+            m_status = Status::TOO_HIGH;
+        }
+        else {
+            m_status = Status::NORMAL;
+        }
+    }
+    else {
+        m_status = Status::NORMAL;
+    }
     update();
 }
 

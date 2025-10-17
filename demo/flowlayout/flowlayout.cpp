@@ -219,3 +219,19 @@ int FlowLayout::smartSpacing(QStyle::PixelMetric pm) const
     }
 }
 //! [12]
+
+void FlowLayout::insertWidget(int index, QWidget *widget)
+{
+    if (!widget)
+        return;
+    addChildWidget(widget);
+    QLayoutItem *item = new QWidgetItem(widget);
+
+    if (index < 0 || index >= itemList.size()) {
+        itemList.append(item); // fallback: append to end
+    } else {
+        itemList.insert(index, item);
+    }
+
+    invalidate(); // 触发重新布局
+}

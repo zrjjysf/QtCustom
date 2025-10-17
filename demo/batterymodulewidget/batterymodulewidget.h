@@ -9,6 +9,12 @@ class BatteryModuleWidget : public QScrollArea
 {
     Q_OBJECT
 public:
+    enum Status
+    {
+        NORMAL,
+        ALARM    
+    };
+
     explicit BatteryModuleWidget(QWidget *parent = nullptr);
 
     // 添加一个电芯
@@ -36,18 +42,22 @@ public:
     int getMaxVoltageCellIndex() const { return m_maxVoltageCellIndex; }
     int getMinVoltageCellIndex() const { return m_minVoltageCellIndex; }
 
+signals:
+    void statusChanged(int status);
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
 
 private:
+    Status m_currentStatus = Status::NORMAL;
     class ContentWidget;             // 前向声明
     ContentWidget* m_contentWidget;  // 承载所有电芯的容器
 
     QVector<BatteryCellWidget*> m_cells;
     void updateLayout();             // 布局电芯
     
-    float m_lowVoltageThreshold;     // 低压阈值
-    float m_highVoltageThreshold;    // 高压阈值
+    float m_lowVoltageThreshold = 0.0;     // 低压阈值
+    float m_highVoltageThreshold = 0.0;    // 高压阈值
     
     // 新增：最高最低电压相关变量
     float m_maxVoltage;              // 当前最高电压

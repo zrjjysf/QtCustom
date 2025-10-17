@@ -1,23 +1,22 @@
-#ifndef BMSCELLVOLTAGEWGT_H
-#define BMSCELLVOLTAGEWGT_H
+#ifndef BMSTEMPERATUREPROBEWGT_H
+#define BMSTEMPERATUREPROBEWGT_H
 
 #include <QWidget>
 #include <QMap>
 
 class QLabel;
 class QTimer;
-class QVBoxLayout;
 class QHBoxLayout;
 class QScrollArea;
 class QStackedLayout;
 class BatteryPackWidget;
-class BatteryModuleWidget;
+class TemperatureModuleWidget;
 class FlowLayout;
 
-class BMSCellVoltageWgt : public QWidget {
+class BMSTemperatureProbeWgt : public QWidget {
     Q_OBJECT
 public:
-    explicit BMSCellVoltageWgt(QWidget *parent = nullptr);
+    explicit BMSTemperatureProbeWgt(QWidget *parent = nullptr);
     void updateData();
 
 private:
@@ -34,10 +33,10 @@ private:
     QStackedLayout *m_stackLayout;
 
     QMap<int, BatteryPackWidget*> m_packWidgets;
-    QMap<int, BatteryModuleWidget*> m_moduleWidgets;
+    QMap<int, TemperatureModuleWidget*> m_moduleWidgets;
     QVector<int> m_index;//id存放的位置
     QWidget* m_stackContainer;
     int m_currentID = -1;
 };
 
-#endif // BMSCELLVOLTAGEWGT_H
+#endif // BMSTEMPERATUREPROBEWGT_H

@@ -7,6 +7,7 @@ class TemperatureProbeWidget : public QWidget
 {
     Q_OBJECT
 public:
+    enum Status { NORMAL, TOO_LOW, TOO_HIGH };
     explicit TemperatureProbeWidget(QWidget *parent = nullptr);
 
     // 设置编号
@@ -20,6 +21,7 @@ public:
 
     // 设置是否高亮显示
     void setHighlighted(bool highlight);
+    Status currentStatus() { return m_status; }
 
     // 静态尺寸定义
     static int margin;
@@ -31,6 +33,7 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
+    Status m_status = Status::NORMAL;
     int m_number;
     int m_temperature = 0;      // 当前温度
     int m_lowTemperature = 0;   // 低温阈值

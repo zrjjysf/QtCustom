@@ -1,9 +1,9 @@
-#include "bmscellvoltagewgt.h"
+#include "bmstemperatureprobewgt.h"
 // #include "core/coremanager.h"
 // #include "gui/component/batterymodulewidget.h"
 // #include "gui/component/batterypackwidget.h"
 #include "batterypackwidget.h"
-#include "batterymodulewidget.h"
+#include "temperaturemodulewidget.h"
 #include "customscrollbar.h"
 #include "flowlayout.h"
 #include "absbmsstruct.h"
@@ -15,10 +15,10 @@
 #include <QDebug>
 
 const int margin = 18;
-const float lowVoltageThreshold = 3.0;
-const float highVoltageThreshold = 9999.0;
+const int lowTemperatureThreshold = -1000;
+const int highTemperatureThreshold = 53.0;
 
-BMSCellVoltageWgt::BMSCellVoltageWgt(QWidget *parent)
+BMSTemperatureProbeWgt::BMSTemperatureProbeWgt(QWidget *parent)
     : QWidget(parent),
       m_refreshTimer(new QTimer(this)),
       m_mainLayout(new QHBoxLayout(this)),
@@ -52,26 +52,21 @@ BMSCellVoltageWgt::BMSCellVoltageWgt(QWidget *parent)
 }
 
 
-void BMSCellVoltageWgt::initMyConnect()
+void BMSTemperatureProbeWgt::initMyConnect()
 {
-    connect(m_refreshTimer, &QTimer::timeout, this, &BMSCellVoltageWgt::updateData);
+    connect(m_refreshTimer, &QTimer::timeout, this, &BMSTemperatureProbeWgt::updateData);
 }
 
-void BMSCellVoltageWgt::updateData()
+void BMSTemperatureProbeWgt::updateData()
 {
-    static int count = 5;
     ABSBatteryClusterInfo data;
-    // for(int i=12;i>=0;--i) // 包号
-    // {
-    //     for(int cell_id = 0;cell_id<i*5;++cell_id)//电芯编号
-    //     {
-    //         data.addCellVoltage(1,i,cell_id,cell_id+i);
-    //     }
-    // }
-    // data.addCellVoltage(1,5,1,1.0);
-    // data.addCellVoltage(1,2,1,1.0);
-    data.addCellVoltage(1,count,1,1.0);
-    --count;
+    for(int i=0;i<12;++i) // 包号
+    {
+        for(int cell_id = 0;cell_id<i*5;++cell_id)//电芯编号
+        {
+            data.addTempSensor(1,i,cell_id,cell_id+i);
+        }
+    }
 
     if (data.racks.empty())
         return;
@@ -81,16 +76,15 @@ void BMSCellVoltageWgt::updateData()
 
     while (modules_it != rack.modules.constEnd()) {
         int moduleId = modules_it.key();
-        QVector<float> voltages(modules_it.value().cells.begin(), modules_it.value().cells.end());
+        QVector<int> cell_values(modules_it.value().temps.begin(), modules_it.value().temps.end());
 
-        // 创建或更新 BatteryModuleWidget
-        BatteryModuleWidget *moduleWidget = nullptr;
+        TemperatureModuleWidget *moduleWidget = nullptr;
         if (m_moduleWidgets.contains(moduleId)) {
             moduleWidget = m_moduleWidgets[moduleId];
         } else {
-            moduleWidget = new BatteryModuleWidget;
+            moduleWidget = new TemperatureModuleWidget;
             moduleWidget->setNumber(moduleId);
-            moduleWidget->setVoltageThresholds(lowVoltageThreshold, highVoltageThreshold);
+            moduleWidget->setTemperatureThresholds(lowTemperatureThreshold, highTemperatureThreshold);
             m_moduleWidgets[moduleId] = moduleWidget;
             m_stackLayout->addWidget(moduleWidget);
         }
@@ -100,7 +94,6 @@ void BMSCellVoltageWgt::updateData()
             BatteryPackWidget *packWidget = new BatteryPackWidget;
             packWidget->setPackID(moduleId);
             m_packWidgets[moduleId] = packWidget;
-            m_leftLayout->addWidget(packWidget);
             // 计算插入位置
             auto it = std::lower_bound(m_index.begin(), m_index.end(), moduleId);
             int insertPos = std::distance(m_index.begin(), it);
@@ -110,17 +103,17 @@ void BMSCellVoltageWgt::updateData()
             m_leftLayout->insertWidget(insertPos, packWidget);
 
             // 点击左侧 packWidget → 切换右侧页面
-            connect(packWidget, &BatteryPackWidget::opened,this,&BMSCellVoltageWgt::handleSwitch);
-            connect(moduleWidget,&BatteryModuleWidget::statusChanged,packWidget,&BatteryPackWidget::slotStatusChanged);
+            connect(packWidget, &BatteryPackWidget::opened,this,&BMSTemperatureProbeWgt::handleSwitch);
+            connect(moduleWidget,&TemperatureModuleWidget::statusChanged,packWidget,&BatteryPackWidget::slotStatusChanged);
         }
 
         // 更新数据，这时会触发信号
-        moduleWidget->updateCellData(voltages);
+        moduleWidget->updateProbeData(cell_values);
         ++modules_it;
     }
 }
 
-void BMSCellVoltageWgt::handleSwitch(int packID)
+void BMSTemperatureProbeWgt::handleSwitch(int packID)
 {
     if (!m_moduleWidgets.contains(packID))
         return;
