@@ -29,18 +29,23 @@ public:
      */
     void setRenderer(TemplateSvgRenderer* renderer,bool rendererOwned = false);
     
-    // /**
-    //  * @brief setReplacement 设置替换键值对，没有的话会新增
-    //  * @param key 要替换的字符串
-    //  * @param value 替换后的值
-    //  */
-    // void setReplacement(const QString &key, const QString &value);
+    /**
+     * @brief setReplacement 设置替换键值对，没有的话会新增,调用完成之后重新绘制
+     * @param key 要替换的字符串
+     * @param value 替换后的值
+     */
+    void setReplacement(const QString &key, const QString &value);
 
-    // /**
-    //  * @brief removeReplacement 移除指定的替换键
-    //  * @param key 要移除的键
-    //  */
-    // void removeReplacement(const QString &key);
+    /**
+     * @brief removeReplacement 移除指定的替换键,调用完成之后重新绘制
+     * @param key 要移除的键
+     */
+    void removeReplacement(const QString &key);
+
+    /**
+     * @brief clearReplacements 清空所有替换规则,调用完成之后重新绘制
+     */
+    void clearReplacements();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

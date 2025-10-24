@@ -1,6 +1,5 @@
 #include "batterypackwidget.h"
 #include "templatesvgwidget.h"
-#include "templatesvgrenderer.h"
 #include <QApplication>
 #include <QDebug>
 #include <QGridLayout>
@@ -33,8 +32,7 @@ BatteryPackWidget::BatteryPackWidget(QWidget *parent)
 void BatteryPackWidget::setPackID(int packID) 
 { 
     m_packID = packID;
-    TemplateSvgRenderer* renderer =  m_bg->renderer();
-    renderer->setReplacement("PACKAGE_ID", "Pack "+QString::number(m_packID));
+    m_bg->setReplacement("PACKAGE_ID", "Pack "+QString::number(m_packID));
 }
 
 void BatteryPackWidget::setOpenMode(OpenMode mode) 
@@ -50,9 +48,8 @@ void BatteryPackWidget::setOpenMode(OpenMode mode)
 void BatteryPackWidget::setStatus(Status sta) 
 {
     m_status = sta;
-    TemplateSvgRenderer* renderer =  m_bg->renderer();
     QString currentColor = m_status == ALARM?"red":"#f49c39";
-    renderer->setReplacement("currentColor", currentColor);
+    m_bg->setReplacement("currentColor", currentColor);
 }
 
 void BatteryPackWidget::mousePressEvent(QMouseEvent *event)

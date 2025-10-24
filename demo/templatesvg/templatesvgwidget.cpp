@@ -99,3 +99,21 @@ void TemplateSvgWidget::changeEvent(QEvent *e)
         reload();
     }
 }
+
+void TemplateSvgWidget::setReplacement(const QString &key, const QString &value)
+{
+    m_renderer->setReplacement(key, value);
+    update();
+}
+
+void TemplateSvgWidget::removeReplacement(const QString &key)
+{
+    m_renderer->removeReplacement(key);
+    update();
+}
+
+void TemplateSvgWidget::clearReplacements()
+{
+    m_renderer->clearReplacements();
+    update();
+}
